@@ -3,20 +3,22 @@ import { Button } from "@material-tailwind/react";
 
 const Summary = ({ formData, prevStep }) => {
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-2xl mb-4">Summary</h2>
-      <div className="text-left">
-        <p><strong>Vehicle Type:</strong> {formData.vehicleType}</p>
-        <p><strong>Drivetrain:</strong> {formData.drivetrain}</p>
-        <p><strong>Battery Configuration:</strong> {formData.battery}</p>
-        <p><strong>Build Type:</strong> {formData.buildType}</p>
-        <p><strong>Additional Features:</strong> {formData.features}</p>
-        <p><strong>Insurance & Warranty:</strong> {formData.warranty}</p>
-        <p className="mt-4"><strong>Total Cost:</strong> ${formData.totalCost}</p>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100 overflow-y-auto">
+      <h2 className="text-4xl md:text-5xl mb-8 text-center">Summary</h2>
+      <div className="w-full md:max-w-4xl bg-white rounded-lg shadow-lg p-8">
+        <div className="text-left mb-6">
+          <p className="text-lg md:text-xl mb-4"><strong>Vehicle Type:</strong> {formData.vehicleType}</p>
+          <p className="text-lg md:text-xl mb-4"><strong>Drivetrain:</strong> {formData.drivetrain}</p>
+          <p className="text-lg md:text-xl mb-4"><strong>Battery Configuration:</strong> {formData.battery}</p>
+          <p className="text-lg md:text-xl mb-4"><strong>Build Type:</strong> {formData.buildType}</p>
+          <p className="text-lg md:text-xl mb-4"><strong>Additional Features:</strong> {formData.features}</p>
+          <p className="text-lg md:text-xl mb-4"><strong>Insurance & Warranty:</strong> {formData.warranty}</p>
+          <p className="text-lg md:text-xl mb-4"><strong>Total Cost:</strong> ₹{formData.totalCost}</p>
+        </div>
+        <div className="flex justify-center">
+          <Button onClick={prevStep} className='px-8 py-3 text-lg '>Previous</Button>
+        </div>
       </div>
-      <div className="flex space-x-4">
-       <Button onClick={prevStep} className='m-5' >Previous</Button>
-       </div>
     </div>
   );
 };

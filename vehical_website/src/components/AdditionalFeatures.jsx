@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import img from '../assets/On_road_passenger.png'
+import img from '../assets/On_road_passenger.png';
 
 import {
   Card,
@@ -11,14 +11,14 @@ import {
 } from "@material-tailwind/react";
 
 const acOptions = [
-  { label: 'AC', value: 'ac', cost: 1000 },
+  { label: 'AC', value: 'ac', cost: 50000 },
   { label: 'Non-AC', value: 'non-ac', cost: 0 }
 ];
 
 const techOptions = [
-  { label: 'Basic Technology',desc:"LTE, GPS, Infotainment system", value: 'basic', cost: 1500 },
-  { label: 'Smart Technology',desc:"LTE, GPS, Infotainment system DMS, Parking assistance Booking, navigation & maintenance", value: 'smart', cost: 3000 },
-  { label: 'Smart+ Technology',desc:"LTE, GPS, Infotainment system DMS, Parking assistance, ADAS Booking & navigation apps", value: 'smart+', cost: 5000 }
+  { label: 'Basic Technology', desc: "LTE, GPS, Infotainment system", value: 'basic', cost: 25000 },
+  { label: 'Smart Technology', desc: "LTE, GPS, Infotainment system DMS, Parking assistance Booking, navigation & maintenance", value: 'smart', cost: 50000 },
+  { label: 'Smart+ Technology', desc: "LTE, GPS, Infotainment system DMS, Parking assistance, ADAS Booking & navigation apps", value: 'smart+', cost: 75000 }
 ];
 
 const AdditionalFeatures = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -35,92 +35,81 @@ const AdditionalFeatures = ({ formData, setFormData, nextStep, prevStep }) => {
   };
 
   return (
-    <div>
-    <h2 className="text-2xl mb-4">Select Additional Features</h2>
-    <div className="flex flex-row items-center">
-      <img src={img} className='w-96'></img>
-      <div className="flex flex-col h-full">
-
-      <Card className="mt-6 w-96 mb-12 hover:shadow-lg hover:shadow-gray-900/20"  
-           >
-      <CardBody>
-        <Typography variant="h5" color="blue-gray" className="mb-2">
-         Build Card
-        </Typography>
-        <Typography>
-        {formData.vehicleType}
-        </Typography>
-        <Typography>
-        {formData.drivetrain}
-        </Typography>
-        <Typography>
-        {formData.battery}
-        </Typography>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100">
+      <h2 className="text-3xl md:text-5xl mb-8 text-center">Select Additional Features</h2>
+      <div className="flex flex-col md:flex-row items-center w-full">
+        <img src={img} className='w-full md:w-1/3 mb-8 md:mb-0 md:mr-8' alt="Vehicle" />
         
-      </CardBody>
-      <CardFooter className="pt-0">
-      </CardFooter>
-    </Card>
+        <div className="flex flex-col md:flex-row w-full">
+          <div className="flex flex-col mb-8 md:mb-0 md:mr-8">
+            <Card className="w-full mb-8 hover:shadow-lg hover:shadow-gray-900/20">
+              <CardBody>
+                <Typography variant="h5" color="blue-gray" className="mb-2">
+                  Build Card
+                </Typography>
+                <Typography>{formData.vehicleType}</Typography>
+                <Typography>{formData.drivetrain}</Typography>
+                <Typography>{formData.battery}</Typography>
+              </CardBody>
+            </Card>
 
-    
-        {acOptions.map(option => (
-          <label key={option.value} className="flex items-center space-x-2">
-            <Radio
-              name="ac"
-              value={option.value}
-              checked={selectedAC === option.value}
-              onChange={() => handleACSelection(option.value, option.cost)}
-              className="form-radio"
-            />
-            <span>{option.label}</span>
-          </label>
-        ))}
-      </div>
+            <div className="flex flex-col space-y-4">
+              {acOptions.map(option => (
+                <label key={option.value} className="flex items-center space-x-2">
+                  <Radio
+                    name="ac"
+                    value={option.value}
+                    checked={selectedAC === option.value}
+                    onChange={() => handleACSelection(option.value, option.cost)}
+                    className="form-radio"
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
 
-      <div className="flex flex-col ml-10">
-      {techOptions.map(option => (
-<Card className="mt-6 w-96 hover:shadow-lg hover:shadow-gray-900/20"  
-            key={option.value}
-            onClick={() => handleTechSelection(option.value, option.cost)}>
-      <CardBody>
-        <Typography variant="h5" color="blue-gray" className="mb-2">
-          {option.label}
-        </Typography>
-        <Typography>
-          {option.desc} 
-        </Typography>
-      </CardBody>
-      <CardFooter className="pt-0">
-      <a href="#" className="inline-block">
-          <Button size="sm" variant="text" className="flex items-center gap-2" 
-          onClick={() => handleTechSelection(option.value, option.cost)}>
-           
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-4 w-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-              />
-            </svg>
-          </Button>
-        </a>
-      </CardFooter>
-    </Card>
-       ))}
+          <div className="flex flex-col space-y-8">
+            {techOptions.map(option => (
+              <Card className="w-full hover:shadow-lg hover:shadow-gray-900/20 cursor-pointer" 
+                    key={option.value}
+                    onClick={() => handleTechSelection(option.value, option.cost)}>
+                <CardBody>
+                  <Typography variant="h5" color="blue-gray" className="mb-2">
+                    {option.label}
+                  </Typography>
+                  <Typography>
+                    {option.desc}
+                  </Typography>
+                </CardBody>
+                <CardFooter className="pt-0">
+                  <Button size="sm" variant="text" className="flex items-center gap-2" 
+                          onClick={() => handleTechSelection(option.value, option.cost)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="h-4 w-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                      />
+                    </svg>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </div>
       </div>
-
-    </div>
-    <p className="mt-4">Current Cost: ${formData.totalCost}</p>
-      <div className="flex space-x-4">
-      <Button onClick={prevStep} className='m-5' >Previous</Button>
-      </div>
+      <p className="mt-4 text-2xl md:text-3xl w-full shadow-lg outline outline-gray-400 rounded p-3 text-center">
+        Current Cost: {formData.totalCost}₹
+      </p>
+      <Button onClick={prevStep} className='mt-5'>Previous</Button>
     </div>
   );
 };
