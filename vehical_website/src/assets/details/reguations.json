@@ -1,0 +1,43 @@
+{
+    "4W Passenger": [
+      {
+        "type": "M1 (Passenger)",
+        "length": "5000mm",
+        "width": "1800 mm",
+        "topSpeed": "200 kmph",
+        "peakPower": "200 kw",
+        "dryWeight": "N/A kg",
+        "seatingCapacity": "Upto 4"
+      },
+      {
+        "type": "L7 M (Passenger)",
+        "length": "3000mm",
+        "width": "1500 mm",
+        "topSpeed": "70 kmph",
+        "peakPower": "15 kw",
+        "dryWeight": "475 kg",
+        "seatingCapacity": "Upto 4"
+      }
+    ],
+    "4W Cargo": [
+      {
+        "type": "N1 (Cargo)",
+        "length": "5000mm",
+        "width": "1800 mm",
+        "topSpeed": "80 kmph",
+        "peakPower": "100 kw",
+        "dryWeight": "N/A kg",
+        "seatingCapacity": "Upto 2"
+      },
+      {
+        "type": "L7 N (Cargo)",
+        "length": "3700mm",
+        "width": "1500 mm",
+        "topSpeed": "70 kmph",
+        "peakPower": "15 kw",
+        "dryWeight": "525 kg",
+        "seatingCapacity": "Upto 2"
+      }
+    ]
+  }
+  

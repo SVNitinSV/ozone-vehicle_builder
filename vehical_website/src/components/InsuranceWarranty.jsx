@@ -76,9 +76,7 @@ const InsuranceWarranty = ({ formData, setFormData, nextStep, prevStep }) => {
           </div>
         </div>
       </div>
-      <p className="mt-4 text-2xl md:text-3xl w-full shadow-lg outline outline-gray-400 rounded p-3 text-center">
-        Current Cost: {formData.totalCost}₹
-      </p>
+     
       <Button onClick={prevStep} className='mt-5'>Previous</Button>
     </div>
   );

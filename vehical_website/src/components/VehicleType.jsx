@@ -33,17 +33,17 @@ const VehicleType = ({ formData, setFormData, nextStep }) => {
         {options.map(option => (
           <Card
             key={option.value}
-            className="w-full md:w-96 bg-gradient-to-tr from-gray-50 to-gray-100 hover:shadow-lg hover:shadow-gray-900/20 active:opacity-85"
+            className="w-full md:w-96  hover:shadow-lg hover:shadow-gray-900/20 active:opacity-85"
             onClick={() => handleSelection(option.value, option.cost)}
           >
             <CardBody>
               <Typography variant="h5" color="blue-gray" className="mb-2">
                 {option.label}
               </Typography>
-              <Typography className="font-semibold">
+              <Typography className="">
                 Top speed: {option.topspeed}
               </Typography>
-              <Typography className="font-semibold">
+              <Typography className="">
                 {option.desc}
               </Typography>
             </CardBody>

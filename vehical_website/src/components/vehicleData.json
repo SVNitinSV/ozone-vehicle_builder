@@ -1,0 +1,19 @@
+{
+    "2W": {
+      "L1": { "minPower": 0, "maxPower": 10, "minGVW": 0, "maxGVW": 350 },
+      "L2": { "minPower": 11, "maxPower": 15, "minGVW": 351, "maxGVW": 400 }
+    },
+    "3W": {
+      "L5": { "minPower": 16, "maxPower": 25, "minGVW": 401, "maxGVW": 750 },
+      "L6": { "minPower": 26, "maxPower": 30, "minGVW": 751, "maxGVW": 1000 }
+    },
+    "4W": {
+      "M1": {  "minPower": 31," maxPower": 50, "minGVW": 1001, "maxGVW": 1500 },
+      "N1": { "minPower": 51,"maxPower": 70, "minGVW": 1501, "maxGVW": 2000 }
+    },
+    "Truck": {
+      "N2": { "minPower": 71, "maxPower": 100, "minGVW": 2001, "maxGVW": 3500 },
+      "N3": { "minPower": 101,"maxPower": 200, "minGVW": 3501, "maxGVW": 7500 }
+    }
+  }
+  

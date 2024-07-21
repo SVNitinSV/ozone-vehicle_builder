@@ -8,6 +8,7 @@ const Summary = ({ formData, prevStep }) => {
       <div className="w-full md:max-w-4xl bg-white rounded-lg shadow-lg p-8">
         <div className="text-left mb-6">
           <p className="text-lg md:text-xl mb-4"><strong>Vehicle Type:</strong> {formData.vehicleType}</p>
+          <p className="text-lg md:text-xl mb-4"><strong>Vehicle Category:</strong> {formData.vehicleCategory}</p>
           <p className="text-lg md:text-xl mb-4"><strong>Drivetrain:</strong> {formData.drivetrain}</p>
           <p className="text-lg md:text-xl mb-4"><strong>Battery Configuration:</strong> {formData.battery}</p>
           <p className="text-lg md:text-xl mb-4"><strong>Build Type:</strong> {formData.buildType}</p>

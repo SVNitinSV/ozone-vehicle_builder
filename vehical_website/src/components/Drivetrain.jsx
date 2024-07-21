@@ -10,7 +10,9 @@ import {
 
 const options = [
   { label: 'FWD', desc: "Ideal for lower loading, passenger vehicles", value: 'fwd', cost: 124000 },
-  { label: 'RWD', desc: "Ideal for higher loading, cargo vehicles", value: 'rwd', cost: 110000 }
+  { label: 'RWD', desc: "Ideal for higher loading, cargo vehicles", value: 'rwd', cost: 110000 },
+  { label: 'AWD', desc: "Ideal for All-Terrain Adventures, Ensuring Traction and Control", value: 'awd', cost: 110000 }
+
 ];
 
 const Drivetrain = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -20,9 +22,9 @@ const Drivetrain = ({ formData, setFormData, nextStep, prevStep }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 ">
       <h2 className="text-3xl md:text-5xl mb-8 text-center">Select Drivetrain</h2>
-      <div className="flex flex-col lg:flex-row items-center gap-8">
+      <div className="flex flex-col lg:flex-row items-center gap-8  bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
         <img src={driveImg} alt='Drive Train Image' className='w-full lg:w-1/2 h-auto' />
 
         <div className="flex flex-col items-center w-full lg:w-1/2">
@@ -63,7 +65,7 @@ const Drivetrain = ({ formData, setFormData, nextStep, prevStep }) => {
           ))}
         </div>
       </div>
-      <p className="mt-4 text-2xl md:text-3xl w-full shadow-lg outline outline-gray-400 rounded p-3 text-center">Current Cost: {formData.totalCost}₹</p>
+   
       <Button onClick={prevStep} className='mt-5'>Previous</Button>
     </div>
   );
