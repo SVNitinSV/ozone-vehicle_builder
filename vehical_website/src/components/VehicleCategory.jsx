@@ -60,7 +60,8 @@ const options = [
     cost: 55000, 
     img: ofrpImg,
     disabled: true
-  }
+  },
+  
 ];
 
 
@@ -71,7 +72,7 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100  no-scrollbar">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24  no-scrollbar">
       <h2 className="text-3xl md:text-4xl lg:text-5xl mb-8 text-center">Select Vehicle Category</h2>
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
         {options.map(option => (

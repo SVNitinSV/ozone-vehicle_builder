@@ -24,7 +24,7 @@ const Regulation = ({ formData, setFormData, prevStep, nextStep }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24">
       <h2 className="text-3xl md:text-4xl lg:text-5xl mb-8 text-center">Vehicle Regulations</h2>
       <div className="w-full max-w-7xl mx-auto">
         {vehicleCategory ? (

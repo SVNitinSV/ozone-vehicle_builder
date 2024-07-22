@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState } from 'react';
 import Header from './components/Header.jsx';
 import VehicleType from './components/VehicleType';
@@ -11,6 +12,8 @@ import AdditionalFeatures from './components/AdditionalFeatures';
 import InsuranceWarranty from './components/InsuranceWarranty';
 import Summary from './components/Summary';
 import Footer from './components/Footer';
+import StepperComponent from './components/ProgressBar.jsx';
+import { Button } from "@material-tailwind/react";
 import './App.css';
 
 const components = {
@@ -18,12 +21,12 @@ const components = {
   2: VehicleCategory,
   3: RegulationSelect,
   4: Calculator,
-  5: BatteryConfiguration,
-  6: Drivetrain,
+  5: Drivetrain,
+  6: BatteryConfiguration,
   7: BuildType,
   8: AdditionalFeatures,
-  9: InsuranceWarranty,
-  10: Summary,
+  19: InsuranceWarranty,
+  9: Summary,
 };
 
 const App = () => {
@@ -50,9 +53,10 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <Header></Header>
+      <Header />
+      {step > 1 && <StepperComponent step={step} />}
       <CurrentComponent formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />
-      <Footer className='bottom-0 left-0 w-full'></Footer>
+      <Footer className='bottom-0 left-0 w-full' />
     </div>
   );
 };

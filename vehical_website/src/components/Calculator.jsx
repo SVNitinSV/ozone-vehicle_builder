@@ -134,7 +134,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
   };
 
   return (
-    <div className="min-h-screen m-5">
+    <div className="min-h-screen m-5 ">
       <h1 className="text-3xl font-bold text-center mt-10">
         PowerTrain Specification Calculator
       </h1>

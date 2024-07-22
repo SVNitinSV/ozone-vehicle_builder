@@ -1,5 +1,6 @@
 import React from 'react';
 import batImg from '../assets/Battery.png';
+import Bat_model from '../Modelrender';
 import {
   Card,
   CardBody,
@@ -30,7 +31,8 @@ const BatteryConfiguration = ({ formData, setFormData, nextStep, prevStep }) => 
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 ">
       <h2 className="text-3xl md:text-5xl mb-8 text-center">Select Battery</h2>
       <div className="flex flex-col lg:flex-row items-center gap-8 w-full bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
-        <img src={batImg} alt='Battery Image' className='w-full  lg:w-1/2 h-auto ' />
+        
+        <Bat_model ></Bat_model>
 
         <div className="flex flex-col items-center w-full lg:w-1/2">
           {options.map(option => (

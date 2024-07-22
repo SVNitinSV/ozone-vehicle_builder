@@ -14,7 +14,7 @@ const options = [
     label: 'Off-Road', 
     topspeed: '30kmph', 
     desc: "Ideal for on-campus passenger & cargo", 
-    value: 'off-road', 
+    value: 'Off-Road', 
     cost: 100000, 
     img: offroad  
   },
@@ -22,10 +22,11 @@ const options = [
     label: 'On-Road', 
     topspeed: '70kmph', 
     desc: "Ideal for on-road passenger & cargo", 
-    value: 'on-road', 
+    value: 'On-Road', 
     cost: 80000,
     img: onroad 
-  }
+  },
+  
 ];
 
 const VehicleType = ({ formData, setFormData, nextStep }) => {
@@ -35,7 +36,7 @@ const VehicleType = ({ formData, setFormData, nextStep }) => {
   };
 
   return (
-    <div className="min-h-screen min-w-screen w-full flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100">
+    <div className="min-h-screen min-w-screen w-full flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24">
       <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl mb-8 text-center">Choose the Type of Vehicle</h1>
       <div className="w-full text-center mb-8">
         <Typography variant="h6" color="blue-gray" className="mb-2">
