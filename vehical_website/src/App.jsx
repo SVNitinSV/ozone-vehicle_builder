@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Header from './components/Header.jsx';
 import VehicleType from './components/VehicleType';
 import VehicleCategory from './components/VehicleCategory.jsx';
 import RegulationSelect from './components/RegulationSelect.jsx';
@@ -49,6 +50,7 @@ const App = () => {
 
   return (
     <div className="app-container">
+      <Header></Header>
       <CurrentComponent formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />
       <Footer className='bottom-0 left-0 w-full'></Footer>
     </div>

@@ -14,20 +14,20 @@ import {
 
 const options = [
   { 
-    label: '2W Passenger', 
-    desc: 'Efficient city commuter for personal mobility, ideal for short urban trips.', 
-    value: '2W Passenger', 
-    cost: 50000, 
-    img: ofrcImg,
-    disabled: true
+    label: '4W Passenger', 
+    desc: 'Comfortable vehicle for family travel, seats up to 5 people with ample legroom.', 
+    value: '4W Passenger', 
+    cost: 150000, 
+    img: onrpImg,
+    disabled: false
   },
   { 
-    label: '2W Cargo', 
-    desc: 'Compact delivery vehicle for small parcels, suitable for navigating congested areas.', 
-    value: '2W Cargo', 
-    cost: 55000, 
-    img: ofrpImg,
-    disabled: true
+    label: '4W Cargo', 
+    desc: 'Robust vehicle for transporting larger goods, supports up to 1500 kg payload.', 
+    value: '4W Cargo', 
+    cost: 160000, 
+    img: onrpImg,
+    disabled: false
   },
   { 
     label: '3W Passenger', 
@@ -46,22 +46,23 @@ const options = [
     disabled: true 
   },
   { 
-    label: '4W Passenger', 
-    desc: 'Comfortable vehicle for family travel, seats up to 5 people with ample legroom.', 
-    value: '4W Passenger', 
-    cost: 150000, 
-    img: onrpImg,
-    disabled: false
+    label: '2W Passenger', 
+    desc: 'Efficient city commuter for personal mobility, ideal for short urban trips.', 
+    value: '2W Passenger', 
+    cost: 50000, 
+    img: ofrcImg,
+    disabled: true
   },
   { 
-    label: '4W Cargo', 
-    desc: 'Robust vehicle for transporting larger goods, supports up to 1500 kg payload.', 
-    value: '4W Cargo', 
-    cost: 160000, 
-    img: onrpImg,
-    disabled: false
+    label: '2W Cargo', 
+    desc: 'Compact delivery vehicle for small parcels, suitable for navigating congested areas.', 
+    value: '2W Cargo', 
+    cost: 55000, 
+    img: ofrpImg,
+    disabled: true
   }
 ];
+
 
 const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
   const handleSelection = (value, cost) => {
