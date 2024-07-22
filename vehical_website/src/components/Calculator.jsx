@@ -189,7 +189,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
         <Dialog
           open={open}
           handler={handleOpen}
-          className="relative z-50"
+          className="relative z-10"
         >
           <DialogHeader>Calculate Wheel Diameter</DialogHeader>
           <DialogBody>
@@ -198,37 +198,35 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
                 Enter Values for Calculation
               </h2>
               <div className="grid grid-cols-1 gap-4 mb-4">
-                <div>
-                  <label className="block mb-1 font-bold">A:</label>
-                  <input
-                    type="number"
-                    value={a}
-                    onChange={(e) => setA(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-bold">B:</label>
-                  <input
-                    type="number"
-                    value={b}
-                    onChange={(e) => setB(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-bold">C:</label>
-                  <input
-                    type="number"
-                    value={c}
-                    onChange={(e) => setC(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                </div>
+              <div className="flex items-center">
+          <input
+            type="text"
+            className="w-full p-2 mb-2 text-left bg-gray-100 rounded"
+            value={a}
+            onChange={(e) => setA(e.target.value)}
+            placeholder="TureWidth"
+          />
+          <span className="mx-2 font-bold">/</span>
+          <input
+            type="text"
+            className="w-full p-2 mb-2 text-left bg-gray-100 rounded"
+            value={b}
+            onChange={(e) => setB(e.target.value)}
+            placeholder="AspectRatio"
+          />
+          <span className="mx-2 font-bold">R</span>
+          <input
+            type="text"
+            className="w-full p-2 mb-2 text-left bg-gray-100 rounded"
+            value={c}
+            onChange={(e) => setC(e.target.value)}
+            placeholder="RimDiameter"
+          />
+        </div>
                 <div className="flex items-center gap-4">
                   <Button
                     onClick={handleCalculateDia}
-                    className="p-2 bg-blue-500 text-white rounded"
+                    className="p-2 bg-neutral-800"
                   >
                     Calculate Diameter
                   </Button>
@@ -244,7 +242,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
           <DialogFooter>
             <Button
               variant="text"
-              color="red"
+              color="neutral-800"
               onClick={() => setOpen(false)}
               className="mr-1"
             >
@@ -252,7 +250,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
             </Button>
             <Button
               variant="gradient"
-              color="green"
+              color="neutral-800"
               onClick={() => setOpen(false)}
             >
               <span>Confirm</span>
