@@ -1,5 +1,7 @@
 import React from 'react';
 import driveImg from '../assets/Drive_Train.png';
+import EVModel from '../Modelrender';
+
 import {
   Card,
   CardBody,
@@ -22,14 +24,16 @@ const Drivetrain = ({ formData, setFormData, nextStep, prevStep }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 ">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24  ">
       <h2 className="text-3xl md:text-5xl mb-8 text-center">Select Drivetrain</h2>
-      <div className="flex flex-col lg:flex-row items-center gap-8  bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
-        <img src={driveImg} alt='Drive Train Image' className='w-full lg:w-1/2 h-auto' />
+      <div className="flex flex-col xl:flex-row items-center gap-8 w-full bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
+   
+        <EVModel></EVModel>
+   
 
         <div className="flex flex-col items-center w-full lg:w-1/2">
           {options.map(option => (
-            <Card className="mt-6 w-full md:w-96 hover:shadow-lg hover:shadow-gray-900/20"  
+            <Card className="mt-6 w-full  hover:shadow-lg hover:shadow-gray-900/20"  
               key={option.value}
               onClick={() => handleSelection(option.value, option.cost)}>
               <CardBody>

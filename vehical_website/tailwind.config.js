@@ -10,6 +10,16 @@ module.exports = withMT({
       sans: ["Roboto Mono"],
     },
     extend: {
+      transitionProperty: {
+        'opacity': 'opacity',
+        'transform': 'transform',
+      },
+      transitionDuration: {
+        '300': '300ms',
+      },
+      transitionTimingFunction: {
+        'ease-in-out': 'ease-in-out',
+      },
       colors: {
         // you can either spread `colors` to apply all the colors
         ...colors,

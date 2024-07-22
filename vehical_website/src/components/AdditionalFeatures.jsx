@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import img from '../assets/On_road_passenger.png';
+import EVModel from '../ModelCar';
 
 import {
   Card,
@@ -7,7 +8,7 @@ import {
   CardFooter,
   Typography,
   Button,
-  Radio
+  Switch
 } from "@material-tailwind/react";
 
 const acOptions = [
@@ -22,11 +23,19 @@ const techOptions = [
 ];
 
 const AdditionalFeatures = ({ formData, setFormData, nextStep, prevStep }) => {
-  const [selectedAC, setSelectedAC] = useState(formData.ac || '');
+  // State for AC selection
+  const [isAC, setIsAC] = useState(formData.ac === 'ac');
 
-  const handleACSelection = (value, cost) => {
-    setSelectedAC(value);
-    setFormData({ ...formData, ac: value, totalCost: formData.totalCost + cost - (formData.ac ? acOptions.find(option => option.value === formData.ac).cost : 0) });
+  const handleACChange = (checked) => {
+    const value = checked ? 'ac' : 'non-ac';
+    const cost = checked ? acOptions.find(option => option.value === 'ac').cost : acOptions.find(option => option.value === 'non-ac').cost;
+    
+    setIsAC(checked);
+    setFormData({
+      ...formData,
+      ac: value,
+      totalCost: formData.totalCost + cost - (formData.ac ? acOptions.find(option => option.value === formData.ac).cost : 0)
+    });
   };
 
   const handleTechSelection = (value, cost) => {
@@ -38,36 +47,11 @@ const AdditionalFeatures = ({ formData, setFormData, nextStep, prevStep }) => {
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100">
       <h2 className="text-3xl md:text-5xl mb-8 text-center">Select Additional Features</h2>
       <div className="flex flex-col md:flex-row items-center w-full">
-        <img src={img} className='w-full md:w-1/3 mb-8 md:mb-0 md:mr-8' alt="Vehicle" />
+        <EVModel></EVModel>
+        
         
         <div className="flex flex-col md:flex-row w-full">
-          <div className="flex flex-col mb-8 md:mb-0 md:mr-8">
-            <Card className="w-full mb-8 hover:shadow-lg hover:shadow-gray-900/20">
-              <CardBody>
-                <Typography variant="h5" color="blue-gray" className="mb-2">
-                  Build Card
-                </Typography>
-                <Typography>{formData.vehicleType}</Typography>
-                <Typography>{formData.drivetrain}</Typography>
-                <Typography>{formData.battery}</Typography>
-              </CardBody>
-            </Card>
-
-            <div className="flex flex-col space-y-4">
-              {acOptions.map(option => (
-                <label key={option.value} className="flex items-center space-x-2">
-                  <Radio
-                    name="ac"
-                    value={option.value}
-                    checked={selectedAC === option.value}
-                    onChange={() => handleACSelection(option.value, option.cost)}
-                    className="form-radio"
-                  />
-                  <span>{option.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+         
 
           <div className="flex flex-col space-y-8">
             {techOptions.map(option => (
@@ -103,6 +87,15 @@ const AdditionalFeatures = ({ formData, setFormData, nextStep, prevStep }) => {
                 </CardFooter>
               </Card>
             ))}
+             <div className="flex items-center mb-8">
+              <Typography className="mr-4 text-lg">AC</Typography>
+              <Switch
+                checked={isAC}
+                onChange={(e) => handleACChange(e.target.checked)}
+                
+              />
+              <Typography className='ml-3'> Non-AC</Typography>
+            </div>
           </div>
         </div>
       </div>

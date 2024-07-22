@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "react-router-dom": "^6.24.1"
+    "@react-three/drei": "^9.109.0",
+    "@react-three/fiber": "^8.16.8",
+    "react-router-dom": "^6.24.1",
+    "three": "^0.166.1"
   }
 }
