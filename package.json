@@ -13,5 +13,8 @@
     "react-chartjs-2": "^5.2.0",
     "react-router-dom": "^6.24.1",
     "three": "^0.166.1"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0" 
   }
 }
