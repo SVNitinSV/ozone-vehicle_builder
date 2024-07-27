@@ -22,7 +22,7 @@ const Model = ({ url }) => {
 
 const ModelViewer = () => {
   return (
-    <div className='w-full h-screen '>s
+    <div className='w-full h-screen '>
       <Canvas 
         camera={{ position: [0, 2, 10], fov: 60 }} 
         style={{ width: '100%', height: '100%' }}

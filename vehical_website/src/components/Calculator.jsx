@@ -7,9 +7,37 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
+import {
+  ArrowTurnDownLeftIcon,
+  ArrowTurnDownRightIcon,
+} from "@heroicons/react/24/outline";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { calculatePowertrain } from "../assets/calculators/calculatePowertrain";
 import { calculateWheelDiameter } from "../assets/calculators/CalculateWheelDia";
 import regulationsData from "../assets/details/reguations.json";
+
+// Register chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
   const [open, setOpen] = React.useState(false);
@@ -31,6 +59,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
     wheelDia: "",
   });
   const [results, setResults] = useState({});
+  const [graphData, setGraphData] = useState(null); // State to hold graph data
 
   const handleOpen = () => setOpen(!open);
 
@@ -127,10 +156,81 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
 
       const { range1, range2, range3, ...nonRangeResults } = calculatedResults;
       setResults(nonRangeResults);
-    } catch (error) {
-      console.error("Error calculating powertrain:", error);
-      alert("An error occurred while calculating.");
+       // Generate graph data
+       generateGraphData();
+      } catch (error) {
+        console.error("Error calculating powertrain:", error);
+        alert("An error occurred while calculating.");
     }
+  };
+
+  const generateGraphData = () => {
+    const slopes = Array.from({ length: 46 }, (_, i) => i); // 0 to 45 degrees
+    const graphValues = slopes.map((slope) => {
+      const tempOperand = { ...operand, slope };
+      const result = calculatePowertrain(tempOperand);
+      return result.motorPower || 0;
+    });
+
+    setGraphData({
+      labels: slopes,
+      datasets: [
+        {
+          label: "Motor Power vs. Gradability",
+          data: graphValues,
+          borderColor: "rgba(255, 255, 255, 0.5)", // neutral-800
+          backgroundColor: "rgba(255, 255, 255, 1)", // neutral-800
+          grid: "rgba(0, 0, 255, 0.2)",
+          fill: true,
+        },
+      ],
+    });
+  };
+
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.text("PowerTrain Specification Calculator", 14, 20);
+
+    // Vehicle Specifications Section
+    doc.text("Vehicle Specifications", 14, 30);
+    doc.autoTable({
+      head: [["Specification", "Value"]],
+      body: [
+        ["Vehicle Type", formData.vehicleType],
+        ["Category", formData.vehicleCategory],
+        ["Regulation", formData.regulation],
+      ],
+      startY: 40,
+    });
+
+    // Input Data Section
+    doc.text("Input Data", 14, doc.previousAutoTable.finalY + 10);
+    const inputData = Object.keys(operand).map((key) => [
+      key.replace(/([A-Z])/g, " $1").toUpperCase(),
+      operand[key],
+    ]);
+
+    doc.autoTable({
+      head: [["Input", "Value"]],
+      body: inputData,
+      startY: doc.previousAutoTable.finalY + 10,
+    });
+
+    // Results Section
+    doc.text("Results", 14, doc.previousAutoTable.finalY + 10);
+    const resultData = Object.keys(results).map((key) => [
+      key.replace(/([A-Z])/g, " $1").toUpperCase(),
+      results[key],
+    ]);
+
+    doc.autoTable({
+      head: [["Output", "Value"]],
+      body: resultData,
+      startY: doc.previousAutoTable.finalY + 10,
+    });
+
+    doc.save("powertrain_calculations.pdf");
   };
 
   return (
@@ -157,7 +257,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
           </div>
         </div>
         <div className="text-center mb-5">
-          <h1 className="text-xl font-bold ">Powertrain Calculator</h1>
+          <h1 className="text-xl font-bold ">Enter Specifications</h1>
         </div>
         <div className="bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 w-full">
@@ -176,7 +276,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
                     className="w-full p-2"
                   />
                   {key === "wheelDia" && (
-                    <Button onClick={handleOpen} className="ml-2 w-full">
+                    <Button onClick={handleOpen} className="ml-2 ">
                       Calculate Diameter
                     </Button>
                   )}
@@ -193,7 +293,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
         >
           <DialogHeader>Calculate Wheel Diameter</DialogHeader>
           <DialogBody>
-            <div className="p-4 border border-gray-300 rounded-lg shadow-md">
+            <div >
               <h2 className="text-xl font-bold mb-4">
                 Enter Values for Calculation
               </h2>
@@ -283,12 +383,37 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
               <p>No results to display. Please calculate first.</p>
             )}
           </div>
+          <div className="bg-neutral-800 p-4 rounded-lg mb-4 shadow-inner">
+            <h2 className="text-lg font-bold mb-4 text-white">Gradability</h2>
+            {graphData ? (
+              <Line data={graphData} />
+            ) : (
+              <p className="text-white">No graph data available. Calculate first.</p>
+            )}
+          </div>
         </div>
-
-        <div className="flex justify-center mt-5 space-x-4">
-          <Button onClick={prevStep}>Previous</Button>
-          <Button onClick={nextStep}>Next</Button>
-        </div>
+        <div className="flex flex-row">
+        <div className="flex justify-start w-full mt-5 ml-8">
+        <ArrowTurnDownLeftIcon
+          onClick={prevStep}
+          className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
+        />
+      </div>
+           <Button
+            color="neutral-800"
+            onClick={generatePDF}
+            
+          
+          >
+            Download Report
+          </Button>
+      <div className="flex justify-end w-full mt-5 mr-8">
+        <ArrowTurnDownRightIcon
+          onClick={nextStep}
+          className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
+        />
+      </div>
+      </div>
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Button } from "@material-tailwind/react";
 
+
+import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
+
 const Summary = ({ formData, prevStep }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100">
@@ -42,10 +45,17 @@ const Summary = ({ formData, prevStep }) => {
             <p className="text-xl font-semibold">Total Cost:</p>
             <p className="text-xl font-semibold">₹{formData.totalCost}</p>
           </div>
-          <Button className=' bg-neutral-800 ' onClick={() => alert('Proceeding to Checkout')}>Checkout</Button>
-          <Button onClick={prevStep} className=' bg-neutral-800'>Previous</Button>
+          <Button className=' bg-neutral-800 w-full' onClick={() => alert('Proceeding to Checkout')}>Checkout</Button>
+      
         </div>
+        <div className="flex justify-start w-full mt-5 ml-8">
+        <ArrowTurnDownLeftIcon
+          onClick={prevStep}
+          className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
+        />
       </div>
+      </div>
+      
     </div>
   );
 };

@@ -4,6 +4,9 @@ import ofrpImg from '../assets/Off_road_Passenger.png';
 import onrcImg from '../assets/On_road_cargo.png';
 import onrpImg from '../assets/On_road_passenger.png';
 
+
+import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
+
 import {
   Card,
   CardBody,
@@ -32,7 +35,7 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 ">
+    <div className="min-h-screen flex flex-col items-center mt-10 px-4 py-8 md:px-8 lg:px-16 xl:px-24 ">
       <h2 className="text-3xl md:text-5xl mb-8 text-center">Select Build Type</h2>
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
         {filteredOptions.length > 0 ? (
@@ -84,7 +87,12 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
           </Typography>
         )}
       </div>
-      <Button onClick={prevStep} className='mt-5'>Previous</Button>
+      <div className="flex justify-start w-full mt-5 ml-8">
+        <ArrowTurnDownLeftIcon
+          onClick={prevStep}
+          className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
+        />
+      </div>
     </div>
   );
 };

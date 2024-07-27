@@ -2,6 +2,9 @@ import React from 'react';
 import driveImg from '../assets/Drive_Train.png';
 import EVModel from '../Modelrender';
 
+
+import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
+
 import {
   Card,
   CardBody,
@@ -27,11 +30,8 @@ const Drivetrain = ({ formData, setFormData, nextStep, prevStep }) => {
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24  ">
       <h2 className="text-3xl md:text-5xl mb-8 text-center">Select Drivetrain</h2>
       <div className="flex flex-col xl:flex-row items-center gap-8 w-full bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
-   
         <EVModel></EVModel>
-   
-
-        <div className="flex flex-col items-center w-full lg:w-1/2">
+        <div className="flex flex-col items-center w-full xl:w-1/2">
           {options.map(option => (
             <Card className="mt-6 w-full  hover:shadow-lg hover:shadow-gray-900/20"  
               key={option.value}
@@ -69,8 +69,12 @@ const Drivetrain = ({ formData, setFormData, nextStep, prevStep }) => {
           ))}
         </div>
       </div>
-   
-      <Button onClick={prevStep} className='mt-5'>Previous</Button>
+      <div className="flex justify-start w-full mt-5 ml-8">
+        <ArrowTurnDownLeftIcon
+          onClick={prevStep}
+          className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
+        />
+      </div>
     </div>
   );
 };

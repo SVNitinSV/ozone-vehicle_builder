@@ -6,6 +6,7 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
+import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
 import regulationsData from '../assets/details/reguations.json'; // Adjust path as necessary
 
 const Regulation = ({ formData, setFormData, prevStep, nextStep }) => {
@@ -79,9 +80,11 @@ const Regulation = ({ formData, setFormData, prevStep, nextStep }) => {
           <Typography className="text-center text-lg">Please select a vehicle category to view regulations.</Typography>
         )}
       </div>
-      <div className="flex justify-between mt-8">
-        <Button onClick={prevStep} className='mr-4'>Previous</Button>
-        <Button onClick={nextStep}>Next</Button>
+      <div className="flex justify-start w-full mt-5 ml-8">
+        <ArrowTurnDownLeftIcon
+          onClick={prevStep}
+          className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
+        />
       </div>
     </div>
   );
