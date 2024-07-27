@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "vite",
-    "build": "cd vehicles-ozone && npm run build",
+    "build": "cd vehical_website && npm run build",
     "serve": "vite preview"
   },
   "dependencies": {
