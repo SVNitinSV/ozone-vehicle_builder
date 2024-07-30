@@ -10,12 +10,14 @@
     "chart.js": "^4.4.3",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
+    "plotly.js": "^2.34.0",
     "react-chartjs-2": "^5.2.0",
+    "react-plotly.js": "^2.6.0",
     "react-router-dom": "^6.24.1",
     "three": "^0.166.1"
   },
   "devDependencies": {
-    "vite": "^4.0.0",
-    "@vitejs/plugin-react": "^4.0.0"
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^4.0.0"
   }
 }

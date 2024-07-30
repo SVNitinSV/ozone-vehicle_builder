@@ -6,6 +6,9 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
+  Select,
+  Option,
+  Slider
 } from "@material-tailwind/react";
 import {
   ArrowTurnDownLeftIcon,
@@ -28,6 +31,27 @@ import { calculatePowertrain } from "../assets/calculators/calculatePowertrain";
 import { calculateWheelDiameter } from "../assets/calculators/CalculateWheelDia";
 import regulationsData from "../assets/details/reguations.json";
 
+const data = [
+  ["Modern car like a Tesla model 3 or model Y", "0.23", ""],
+  ["Toyota Prius, Tesla model S", "0.24", "frontal area"],
+  ["Sports car, sloping rear", "0.2 - 0.3", "frontal area"],
+  ["Common car like Opel Vectra (class C)", "0.29", ""],
+  ["Old Car like a T-ford", "0.7 - 0.9", ""],
+  ["Tractor Trailed Truck", "0.96", ""],
+  ["Truck", "0.8 - 1.0", ""],
+];
+
+const dragCoefficientData = [
+  ["Truck tire on asphalt", "0.006 - 0.01"],
+  ["Bicycle tire on rough paved road", "0.008"],
+  ["Ordinary car tires on concrete, new asphalt, cobbles small new", "0.01 - 0.015"],
+  ["Car tires on tar or asphalt", "0.02"],
+  ["Car tires on gravel - rolled new", "0.02"],
+  ["Car tires on cobbles - large worn", "0.03"],
+  ["Car tire on solid sand, gravel loose worn, soil medium hard", "0.04 - 0.08"],
+  ["Car tire on loose sand", "0.2 - 0.4"]
+];
+
 // Register chart.js components
 ChartJS.register(
   CategoryScale,
@@ -41,6 +65,7 @@ ChartJS.register(
 
 const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
   const [open, setOpen] = React.useState(false);
+  const [openInfo, setOpenInfo] = React.useState(false);
   const [a, setA] = useState("");
   const [b, setB] = useState("");
   const [c, setC] = useState("");
@@ -55,13 +80,31 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
     maxSpeed: "",
     gvw: "",
     rollCoeff: "",
-    airDen: "",
+    airDen: "1.1",
     wheelDia: "",
   });
+
+  const [gradabilityInputs, setGradabilityInputs] = useState({
+    slope: "",
+    accTime: "",
+    maxSpeed: "",
+    load: "",
+  });
+
+  const [alerts, setAlerts] = useState({
+    maxSpeed: "",
+    width: "",
+    height: "",
+    gvw: "",
+    motorPower: ""
+  });
+
   const [results, setResults] = useState({});
+  const [gradabilityResults, setGradabilityResults] = useState({});
   const [graphData, setGraphData] = useState(null); // State to hold graph data
 
   const handleOpen = () => setOpen(!open);
+  const handleOpenInfo = () => setOpenInfo(!open);
 
   const handleCalculateDia = () => {
     if (a && b && c) {
@@ -76,54 +119,66 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
     }
   };
 
+  const handleGradabilityChange = (e) => {
+    const { name, value } = e.target;
+    setGradabilityInputs((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setOperand((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSliderChange = (name, newValue) => {
+    setOperand(prevState => ({
+      ...prevState,
+      [name]: newValue
+    }));
   };
 
   const checkRegulationLimits = (calculatedResults) => {
     const selectedRegulation = regulationsData[formData.vehicleCategory]?.find(
       (reg) => reg.type === formData.regulation
     );
-
+  
     if (!selectedRegulation) return true;
-
+  
     const limitCheck = {
       maxSpeed: selectedRegulation.topSpeed,
       width: selectedRegulation.width,
       height: selectedRegulation.length,
       gvw: selectedRegulation.dryWeight,
     };
-
+  
+    let newAlerts = { maxSpeed: "", width: "", height: "", gvw: "", motorPower: "" };
+  
     for (const key in limitCheck) {
       const regulationValue = parseFloat(limitCheck[key]);
       const operandValue = parseFloat(operand[key]);
-
+  
       if (
         !isNaN(regulationValue) &&
         !isNaN(operandValue) &&
         operandValue > regulationValue
       ) {
-        alert(
-          `The value of ${key.replace(
-            /([A-Z])/g,
-            " $1"
-          )} exceeds the regulation limit of ${limitCheck[key]}.`
-        );
-        return false;
+        newAlerts[key] = `${key.replace(
+          /([A-Z])/g,
+          " $1"
+        )} exceeds the regulation limit of ${limitCheck[key]}.`;
       }
     }
-
+  
     const motorPower = calculatedResults.motorPower;
     const peakPowerLimit = parseFloat(selectedRegulation.peakPower);
-
+  
     if (motorPower > peakPowerLimit) {
-      alert(
-        `Warning: The motor power exceeds the regulation limit of ${selectedRegulation.peakPower}.`
-      );
+      newAlerts.motorPower = `Warning: The motor power exceeds the regulation limit of ${selectedRegulation.peakPower}. Suggestions: Please reduce the acceleration time, reduce the GVW, or reduce the max speed.`;
     }
-
-    return true;
+  
+    setAlerts(newAlerts);
+  
+    // Return false if any alert is not empty, true otherwise
+    return Object.values(newAlerts).every(alert => alert === "");
   };
 
   const handleCalculate = () => {
@@ -156,22 +211,54 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
 
       const { range1, range2, range3, ...nonRangeResults } = calculatedResults;
       setResults(nonRangeResults);
-       // Generate graph data
-       generateGraphData();
+      
       } catch (error) {
         console.error("Error calculating powertrain:", error);
         alert("An error occurred while calculating.");
     }
   };
 
+  const handleGradabilityCalculate = () => {
+    const { slope, accTime, maxSpeed, load } = gradabilityInputs;
+
+    if (!slope || !accTime || !maxSpeed || !load) {
+      alert("Please fill in all fields for gradability calculation.");
+      return;
+    }
+
+    try {
+      const newOperand = {
+        ...operand,
+        slope,
+        accTime,
+        maxSpeed,
+        gvw: (parseFloat(operand.gvw) * 0.8 + parseFloat(load)).toString(),
+      };
+      const gradabilityResult = calculatePowertrain(newOperand);
+      setGradabilityResults(gradabilityResult);
+       // Generate graph data
+       generateGraphData();
+    } catch (error) {
+      console.error("Error calculating gradability powertrain:", error);
+      alert("An error occurred while calculating gradability.");
+    }
+  };
+
+
   const generateGraphData = () => {
     const slopes = Array.from({ length: 46 }, (_, i) => i); // 0 to 45 degrees
+    const { gvw } = operand; // Extracting gvw from operand
+    const { maxSpeed } = gradabilityInputs;
+    const { accTime } = gradabilityInputs
+    const { load } = gradabilityInputs; // Extracting load from gradabilityInputs
+    const effectiveGvw = parseFloat(gvw) * 0.8 + parseFloat(load); // Calculating effective GVW
+    console.log(accTime)
     const graphValues = slopes.map((slope) => {
-      const tempOperand = { ...operand, slope };
+      const tempOperand = { ...operand, slope,maxSpeed,accTime, gvw: effectiveGvw }; // Using effective GVW
       const result = calculatePowertrain(tempOperand);
       return result.motorPower || 0;
     });
-
+  
     setGraphData({
       labels: slopes,
       datasets: [
@@ -187,8 +274,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
     });
   };
 
-
-  const generatePDF = () => {
+   const generatePDF = () => {
     const doc = new jsPDF();
     doc.text("PowerTrain Specification Calculator", 14, 20);
 
@@ -230,7 +316,22 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
       startY: doc.previousAutoTable.finalY + 10,
     });
 
-    doc.save("powertrain_calculations.pdf");
+    // Gradability Results Section
+    doc.text("Gradability Results", 14, doc.previousAutoTable.finalY + 10);
+    const gradabilityResultData = Object.keys(gradabilityResults).map(
+      (key) => [
+        key.replace(/([A-Z])/g, " $1").toUpperCase(),
+        gradabilityResults[key],
+      ]
+    );
+
+    doc.autoTable({
+      head: [["Output", "Value"]],
+      body: gradabilityResultData,
+      startY: doc.previousAutoTable.finalY + 10,
+    });
+
+    doc.save("powertrain_specifications.pdf");
   };
 
   return (
@@ -261,29 +362,129 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
         </div>
         <div className="bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 w-full">
-            {Object.keys(operand).map((key) => (
-              <div key={key} className="mb-4">
-                <label className="block mb-1 font-bold">
-                  {key.replace(/([A-Z])/g, " $1").toUpperCase()}:
-                </label>
-                <div className="flex items-center">
-                  <Input
-                    type="number"
-                    variant="standard"
-                    name={key}
-                    value={operand[key]}
-                    onChange={handleChange}
-                    className="w-full p-2"
-                  />
-                  {key === "wheelDia" && (
-                    <Button onClick={handleOpen} className="ml-2 ">
-                      Calculate Diameter
-                    </Button>
-                  )}
-                </div>
-              </div>
-            ))}
+          {Object.keys(operand).map((key) => {
+  if (key === 'dragCoeff' || key === 'rollCoeff') return null;
+
+  return (
+    <div key={key} className="mb-4">
+      <label className="block mb-1 font-bold">
+        {key.replace(/([A-Z])/g, " $1").toUpperCase()}:
+      </label>
+      <div className="flex items-center">
+        <Input
+          type="number"
+          variant="standard"
+          name={key}
+          value={key === 'airDensity' && operand[key] === undefined ? 1.1 : operand[key]}
+          onChange={handleChange}
+          className="w-full p-2"
+          required
+        />
+      </div>
+    </div>
+  );
+})}
           </div>
+          <Button onClick={handleOpen} className="w-full mb-10">
+            Calculate Diameter
+          </Button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-4 w-full">
+          <div className="mb-4">
+          <Slider
+              id="dragCoeffSlider"
+              name="dragCoeff"
+              min={0.2}
+              max={1}
+              step={0.01}
+              value={operand.dragCoeff}
+              onChange={(e) => handleSliderChange("dragCoeff", e.target.value)}
+            />
+            <label htmlFor="dragCoeffSlider">Drag Coefficient: {operand.dragCoeff}</label>
+      </div>
+
+      <div className="mb-4">
+      <Slider
+              id="rollCoeffSlider"
+              name="rollCoeff"
+              min={0.015}
+              max={0.500}
+              step={0.01}
+              value={operand.rollCoeff}
+              onChange={(e) => handleSliderChange("rollCoeff", e.target.value)}
+            />
+            <label htmlFor="rollCoeffSlider">Rolling Coefficient: {operand.rollCoeff}</label>
+
+      </div>
+          </div>
+          <Button onClick={handleOpenInfo} className=" w-full bg-transparent outline outline-neutral-800 text-neutral-800">
+                    Info
+          </Button>
+
+          <Dialog
+  open={openInfo}
+  onClose={() => setOpenInfo(false)}
+  className="relative z-10 "
+>
+  
+  <DialogBody className="p-4 w-full text-xs">
+    <h2 className="text-lg text-neutral-800  font-bold mb-4">Drag Coefficient Reference Table</h2>
+    <table className="min-w-full border-collapse border border-gray-400">
+      <thead>
+        <tr>
+          <th className="border border-gray-300 px-4 py-2">Description</th>
+          <th className="border border-gray-300 px-4 py-2">Drag Coefficient</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((row, index) => (
+          <tr key={index}>
+            <td className="border border-gray-300 px-4 py-2">{row[0]}</td>
+            <td className="border border-gray-300 px-4 py-2">{row[1]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h2 className="text-lg text-neutral-800 font-bold mb-4 mt-8">Rolling Resistance Reference Table</h2>
+    <table className="min-w-full border-collapse border border-gray-400">
+      <thead>
+        <tr>
+          <th className="border border-gray-300 px-4 py-2">Description</th>
+          <th className="border border-gray-300 px-4 py-2">Rolling Resistance Coefficient</th>
+        </tr>
+      </thead>
+      <tbody>
+        {dragCoefficientData.map((row, index) => (
+          <tr key={index}>
+            <td className="border border-gray-300 px-4 py-2">{row[0]}</td>
+            <td className="border border-gray-300 px-4 py-2">{row[1]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </DialogBody>
+  <DialogFooter>
+    <Button
+      variant="text"
+      color="neutral-800"
+      onClick={() => setOpenInfo(false)}
+      className="mr-1"
+    >
+      <span>Close</span>
+    </Button>
+  </DialogFooter>
+</Dialog>
+
+
+
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 w-full">
+          {alerts.maxSpeed && <p className="alert-text text-red-600">{alerts.maxSpeed}</p>}
+             {alerts.width && <p className="alert-text text-red-600">{alerts.width}</p>}
+             {alerts.height && <p className="alert-text text-red-600">{alerts.height}</p>}
+             {alerts.gvw && <p className="alert-text text-red-600">{alerts.gvw}</p>}
+          </div>
+          {alerts.motorPower && <p className="alert-text text-red-600 font-bold">{alerts.motorPower}</p>}
         </div>
 
         <Dialog
@@ -292,7 +493,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
           className="relative z-10"
         >
           <DialogHeader>Calculate Wheel Diameter</DialogHeader>
-          <DialogBody>
+          <DialogBody className="">
             <div >
               <h2 className="text-xl font-bold mb-4">
                 Enter Values for Calculation
@@ -361,8 +562,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
         <div className="flex justify-center mt-5 space-x-4">
           <Button onClick={handleCalculate}>Calculate</Button>
         </div>
-
-        <div className="mt-4 bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
+            <div className="mt-4 bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
           <h2 className="text-2xl font-bold mb-5">Results:</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 w-full">
             {Object.keys(results).length > 0 ? (
@@ -383,6 +583,76 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
               <p>No results to display. Please calculate first.</p>
             )}
           </div>
+        </div>
+         <div className="mt-4 bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
+         <h2 className="text-2xl font-bold mb-5">Gradability:</h2>
+         <div className="grid grid-cols-2 gap-2">
+         <Select
+                label="Gradability"
+                variant="standard"
+                name="slope"
+                value={gradabilityInputs.slope}
+                onChange={(e) =>
+                  handleGradabilityChange({
+                    target: { name: "slope", value: e },
+                  })
+                }
+              >
+                <Option value="5">City Bridges</Option>
+                <Option value="10">Multilevel Parking</Option>
+                <Option value="15">Residential Driveways</Option>
+                <Option value="17">Hill Stations</Option>
+                <Option value="12">Garage Ramps</Option>
+              </Select>
+          <Input
+            type="text"
+            name="slope"
+            variant="standard"
+            label="Slope"
+            value={gradabilityInputs.slope}
+            onChange={handleGradabilityChange}
+            required
+          />
+          <Input
+            type="text"
+            name="accTime"
+            variant="standard"
+            label="Acceleration Time"
+            value={gradabilityInputs.accTime}
+            onChange={handleGradabilityChange}
+            required
+          />
+          <Input
+            type="text"
+            name="maxSpeed"
+            variant="standard"
+            label="Max Speed"
+            value={gradabilityInputs.maxSpeed}
+            onChange={handleGradabilityChange}
+            required
+          />
+
+              <Input
+                label="Load (in kg)"
+                variant="standard"
+                name="load"
+                value={gradabilityInputs.load}
+                onChange={handleGradabilityChange}
+                type="number"
+              />
+
+        </div>
+        <div className="flex justify-center gap-3">
+          <Button onClick={handleGradabilityCalculate} className="mt-5">
+            Calculate Gradability
+          </Button>
+        </div>
+        <h2 className="text-2xl font-bold mb-5">Results:</h2>
+          <div className="mb-4 w-full">
+          <h5 className="font-bold">{gradabilityResults.motorPower}
+            kW required at {gradabilityInputs.slope}/{(((gradabilityInputs.slope)/45)*100).toFixed(2)}% 
+            with GVW {operand.gvw}kg and load of {gradabilityInputs.load}kg at {gradabilityInputs.maxSpeed} kmph</h5>
+          </div>
           <div className="bg-neutral-800 p-4 rounded-lg mb-4 shadow-inner">
             <h2 className="text-lg font-bold mb-4 text-white">Gradability</h2>
             {graphData ? (
@@ -391,7 +661,8 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
               <p className="text-white">No graph data available. Calculate first.</p>
             )}
           </div>
-        </div>
+         </div>
+
         <div className="flex flex-row">
         <div className="flex justify-start w-full mt-5 ml-8">
         <ArrowTurnDownLeftIcon

@@ -28,7 +28,7 @@ const ModelViewer = () => {
         style={{ width: '100%', height: '100%' }}
       >
         {/* Add ambient light */}
-        <ambientLight intensity={1} />
+        <ambientLight intensity={5} />
 
         {/* Add directional light for more focused lighting */}
         <directionalLight position={[5, 5, 5]} intensity={0.6} />
