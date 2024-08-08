@@ -1,0 +1,18 @@
+{
+    "width": "Overall width",
+    "height": "Overall height",
+    "length": "Overall length",
+    "dragCoeff": "",
+    "accTime": "Time to reach top speed",
+    "slope": "Inclination ",
+    "batt": "kWh",
+    "gearRatio": "Desired gear ratio",
+    "maxSpeed": "Top speed",
+    "gvw": "Weight at full capacity",
+    "wheelDia": "Size of wheels",
+    "rollCoeff": "",
+    "airDen": "Air density"
+  }
+
+ 
+  

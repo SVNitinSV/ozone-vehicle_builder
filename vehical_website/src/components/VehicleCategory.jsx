@@ -1,8 +1,8 @@
 import React from 'react';
-import ofrcImg from '../assets/Off_road_cargo.png';
-import ofrpImg from '../assets/Off_road_Passenger.png';
-import onrcImg from '../assets/On_road_cargo.png';
-import onrpImg from '../assets/On_road_passenger.png';
+import ofrcImg from '../assets/Cart.jpeg';
+import ofrpImg from '../assets/UTV.jpeg';
+import onrcImg from '../assets/NEC.jpeg';
+import onrpImg from '../assets/Quad.jpeg';
 
 import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
 
@@ -16,53 +16,38 @@ import {
 
 const options = [
   {
-    label: '4W Passenger',
-    desc: 'Comfortable vehicle for family travel, seats up to 5 people with ample legroom.',
+    label: 'QUAD',
+    desc: '2 Seater Fun Motorsport Vehicles',
     value: '4W Passenger',
     cost: 150000,
     img: onrpImg,
     disabled: false,
   },
   {
-    label: '4W Cargo',
-    desc: 'Robust vehicle for transporting larger goods, supports up to 1500 kg payload.',
+    label: 'NEV',
+    desc: 'Robust lifestyle passenger movement upto 6 people.',
     value: '4W Cargo',
     cost: 160000,
     img: onrcImg,
     disabled: false,
   },
   {
-    label: '3W Passenger',
-    desc: 'Flexible transport solution for shared rides, accommodates up to 3 passengers.',
+    label: 'UTV',
+    desc: 'Rugged Passenger + Cargo, Ideal for utility',
     value: '3W Passenger',
     cost: 70000,
-    img: onrcImg,
-    disabled: true,
+    img: ofrpImg,
+    disabled: false,
   },
   {
-    label: '3W Cargo',
+    label: 'Golf Cart',
     desc: 'Versatile cargo vehicle for small to medium loads, ideal for local deliveries.',
     value: '3W Cargo',
     cost: 75000,
-    img: onrpImg,
-    disabled: true,
-  },
-  {
-    label: '2W Passenger',
-    desc: 'Efficient city commuter for personal mobility, ideal for short urban trips.',
-    value: '2W Passenger',
-    cost: 50000,
     img: ofrcImg,
-    disabled: true,
+    disabled: false,
   },
-  {
-    label: '2W Cargo',
-    desc: 'Compact delivery vehicle for small parcels, suitable for navigating congested areas.',
-    value: '2W Cargo',
-    cost: 55000,
-    img: ofrpImg,
-    disabled: true,
-  },
+
 ];
 
 const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -83,7 +68,7 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
         {options.map((option) => (
           <Card
-            className={`w-full p-5 ${
+            className={`w-full rounded-none p-5 ${
               option.disabled
                 ? 'opacity-50 cursor-not-allowed'
                 : 'hover:shadow-lg hover:shadow-gray-900/20 cursor-pointer'
@@ -104,9 +89,9 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
                 </div>
                 <div>
                   <Typography
-                    variant="h5"
+            
                     color="blue-gray"
-                    className="mb-2 text-left sm:text-left"
+                    className="mb-2 text-left sm:text-left text-2xl font-bold"
                   >
                     {option.label}
                   </Typography>
@@ -124,19 +109,8 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
                 onClick={() => !option.disabled && handleSelection(option.value, option.cost)}
                 disabled={option.disabled}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="h-4 w-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
               </Button>
             </CardFooter>

@@ -1,10 +1,18 @@
 import React from 'react';
+import { useState } from 'react';
+import ARViewer from './ARViewer';
 import { Button } from "@material-tailwind/react";
 
 
 import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
 
 const Summary = ({ formData, prevStep }) => {
+  const [showAR, setShowAR] = useState(false);
+
+  const handleARView = () => {
+    setShowAR(true);
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100">
       <h2 className="text-4xl md:text-5xl mb-8 text-center font-semibold">Order Summary</h2>
@@ -55,6 +63,9 @@ const Summary = ({ formData, prevStep }) => {
         />
       </div>
       </div>
+      <div>
+     
+    </div>
       
     </div>
   );

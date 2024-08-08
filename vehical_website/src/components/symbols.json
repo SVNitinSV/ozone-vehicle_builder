@@ -1,0 +1,16 @@
+{
+    "width": "mm",
+    "height": "mm",
+    "length": "mm",
+    "dragCoeff": "",
+    "accTime": "s",
+    "slope": "degrees",
+    "batt": "kWh",
+    "gearRatio": "",
+    "maxSpeed": "km/h",
+    "gvw": "kg",
+    "wheelDia": "mm",
+    "rollCoeff": "",
+    "airDen": "kg/m³"
+  }
+  

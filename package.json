@@ -7,6 +7,8 @@
   "dependencies": {
     "@react-three/drei": "^9.109.0",
     "@react-three/fiber": "^8.16.8",
+    "aframe": "^1.6.0",
+    "aframe-ar": "^0.2.1-a",
     "chart.js": "^4.4.3",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",

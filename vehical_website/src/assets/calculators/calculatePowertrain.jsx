@@ -3,6 +3,7 @@ export const calculatePowertrain = (operand) => {
     const {
         width,
         height,
+        length,
         dragCoeff,
         accTime,
         slope,

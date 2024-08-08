@@ -47,7 +47,7 @@ export function Header() {
                 href="#"
                 className="block py-2 px-3 text-white rounded hover:bg-neutral-700 md:hover:bg-transparent md:border-0 md:hover:text-neutral-200 md:p-0   "
               >
-                About Us
+                ABOUT US
               </a>
             </li>
             <li>
@@ -55,7 +55,7 @@ export function Header() {
                 href="#"
                 className="block py-2 px-3 text-white rounded hover:bg-neutral-700 md:hover:bg-transparent md:border-0 md:hover:text-neutral-200 md:p-0   "
               >
-                Services
+                SERVICES
               </a>
             </li>
             <li>
@@ -63,7 +63,7 @@ export function Header() {
                 href="#"
                 className="block py-2 px-3  text-white rounded hover:bg-neutral-700 md:hover:bg-transparent md:border-0 md:hover:text-neutral-200 md:p-0   "
               >
-                Contact Us
+                CONTACT US
               </a>
             </li>
           </ul>

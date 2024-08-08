@@ -19,14 +19,14 @@ import './App.css';
 const components = {
   1: VehicleType,
   2: VehicleCategory,
-  3: RegulationSelect,
-  4: Calculator,
-  5: Drivetrain,
-  6: BatteryConfiguration,
-  7: BuildType,
-  8: AdditionalFeatures,
+  19: RegulationSelect,
+  3: Calculator,
+  4: Drivetrain,
+  5: BatteryConfiguration,
+  6: BuildType,
+  7: AdditionalFeatures,
   19: InsuranceWarranty,
-  9: Summary,
+  8: Summary,
 };
 
 const App = () => {
@@ -54,7 +54,7 @@ const App = () => {
   return (
     <div className="app-container">
       <Header />
-      {step > 1 && <StepperComponent step={step} />}
+      {/*{step > 1 && <StepperComponent step={step} />}*/}
       <CurrentComponent formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />
       <Footer className='bottom-0 left-0 w-full' />
     </div>

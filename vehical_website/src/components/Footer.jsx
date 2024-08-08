@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer className="bg-neutral-800 flex w-full flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 text-center md:justify-between">
       <Typography color="white" className="font-normal ml-5">
-        &copy; 2024 Ozone Motors
+        &copy; 2024 OZONE MOTORS
       </Typography>
       <ul className="flex flex-wrap items-center gap-y-2 gap-x-8">
 
@@ -15,7 +15,7 @@ export function Footer() {
             color="white"
             className="font-normal mr-3"
           >
-            About Us
+            ABOUT US
           </Typography>
         </li>
         <li>
@@ -25,7 +25,7 @@ export function Footer() {
             color="white"
             className="font-normal mr-3"
           >
-            Services
+            SERVICES
           </Typography>
         </li>
         <li>
@@ -35,7 +35,7 @@ export function Footer() {
             color="white"
             className="font-normal mr-5"
           >
-            Contact Us
+            CONTACT US
           </Typography>
         </li>
       </ul>
