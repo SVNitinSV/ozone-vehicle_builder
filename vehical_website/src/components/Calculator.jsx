@@ -89,11 +89,11 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
     gvw: "",
     dragCoeff: "0.29",
     accTime: "",
-    slope: "",
+    slope: "0",
     gearRatio: "",
     rollCoeff: "0.015",
     airDen: "1.1",
-    wheelDia: "",
+    wheelDia: "625",
   });
 
   const [gradabilityInputs, setGradabilityInputs] = useState({
@@ -228,6 +228,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
 
       const { range1, range2, range3, ...nonRangeResults } = calculatedResults;
       setResults(nonRangeResults);
+      generateGraphData();
     } catch (error) {
       console.error("Error calculating powertrain:", error);
       alert("An error occurred while calculating.");
@@ -237,8 +238,22 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
   const handleGradabilityCalculate = () => {
     const { slope, accTime, maxSpeed, load } = gradabilityInputs;
 
+    // Check if all required fields are filled
     if (!slope || !accTime || !maxSpeed || !load) {
       alert("Please fill in all fields for gradability calculation.");
+      return;
+    }
+
+    // Check if maxSpeed from gradabilityInputs is more than 75% of maxSpeed from operands
+    const operandMaxSpeed = parseFloat(operand.maxSpeed);
+    if (parseFloat(maxSpeed) > 0.5 * operandMaxSpeed) {
+      alert("You can only climb at 50% of max speed.");
+      return;
+    }
+
+    const operandAcc = parseFloat(operand.accTime);
+    if (parseFloat(accTime) < operandAcc) {
+      alert("Acceleration Time too High");
       return;
     }
 
@@ -253,31 +268,26 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
       const gradabilityResult = calculatePowertrain(newOperand);
       setGradabilityResults(gradabilityResult);
       // Generate graph data
-      generateGraphData();
       generateMaxSpeedGraphData();
+      generateGraphData();
     } catch (error) {
       console.error("Error calculating gradability powertrain:", error);
       alert("An error occurred while calculating gradability.");
     }
   };
 
+
   const generateGraphData = () => {
     const maxSpeedValues = Array.from(
-      { length: (gradabilityInputs.maxSpeed / 10) * 10 + 1 },
+      { length: (operand.maxSpeed / 10) * 10 + 1 },
       (_, i) => i
     ); // 0 to maxSpeed
     console.log({ maxSpeedValues });
-    const { gvw } = operand; // Extracting gvw from operand
-    const { slope, accTime, load } = gradabilityInputs; // Extracting values from gradabilityInputs
-    const effectiveGvw = parseFloat(gvw) * 0.8 + parseFloat(load); // Calculating effective GVW
-
     const graphSpeedValues = maxSpeedValues.map((maxSpeed) => {
       const tempOperand = {
         ...operand,
-        slope,
-        maxSpeed,
-        accTime,
-        gvw: effectiveGvw,
+        maxSpeed
+    
       }; // Using effective GVW
       const result = calculatePowertrain(tempOperand);
       return result.motorPower || 0;
@@ -299,39 +309,63 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
   };
 
   const generateMaxSpeedGraphData = () => {
-    const slopes = Array.from({ length: 46 }, (_, i) => i); // 0 to 45 degrees
-    const { gvw } = operand; // Extracting gvw from operand
-    const { maxSpeed, accTime, load } = gradabilityInputs; // Extracting values from gradabilityInputs
+    // Generate an array of values for maxSpeed
+    const maxSpeedValues = Array.from(
+      { length: (gradabilityInputs.maxSpeed / 10) * 10 + 1 },
+      (_, i) => i
+    ); // 0 to maxSpeed
+
+    const { gvw } = operand; // Extracting gvw and slope from operand
+    const { accTime, load, slope} = gradabilityInputs; // Extracting values from gradabilityInputs
     const effectiveGvw = parseFloat(gvw) * 0.8 + parseFloat(load); // Calculating effective GVW
 
-    const graphValues = slopes.map((slope) => {
+    // Generate motor power values for each maxSpeed
+    const graphSpeedValues = maxSpeedValues.map((maxSpeed) => {
       const tempOperand = {
         ...operand,
-        slope,
+        slope, // Maintain the original slope value
         maxSpeed,
         accTime,
         gvw: effectiveGvw,
       }; // Using effective GVW
       const result = calculatePowertrain(tempOperand);
-      console.log({ result });
       return result.motorPower || 0;
     });
 
     setGraphSpeedData({
-      labels: slopes,
+      labels: maxSpeedValues,
       datasets: [
         {
-          label: "Motor Power vs. Gradability",
-          data: graphValues,
+          label: "Motor Power vs. MaxSpeed",
+          data: graphSpeedValues,
           borderColor: "rgba(255, 255, 255, 0.5)", // neutral-800
           backgroundColor: "rgba(255, 255, 255, 1)", // neutral-800
           grid: "rgba(0, 0, 255, 0.2)",
           fill: true,
         },
       ],
+      options: {
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Max Speed (km/h)' // X-axis label with unit
+            },
+            ticks: {
+              stepSize: 10 // Increment of 10 for x-axis
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Motor Power (kW)' // Y-axis label with unit
+            },
+            beginAtZero: true
+          }
+        }
+      }
     });
   };
-
   const generatePDF = () => {
     const doc = new jsPDF();
     doc.text("PowerTrain Specification Calculator", 14, 20);
@@ -395,11 +429,11 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
       <h1 className="text-3xl font-bold text-center mt-10">
         Specification Inputs
       </h1>
-      <div className="p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-3xl mx-auto mt-10">
+      <div className="p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-3xl mx-auto mt-10 rounded-none">
         <div className="text-center mb-5">
           <h1 className="text-xl font-bold ">Enter Desired Specifications</h1>
         </div>
-        <div className="bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
+        <div className="bg-gray-100 p-4 rounded-lg mb-4 shadow-inner rounded-none">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 w-full">
             {Object.keys(operand).map((key) => {
               if (
@@ -412,7 +446,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
 
               return (
                 <div key={key} className="mb-4">
-                  <label className="block mb-1 font-bold">
+                  <label className="block mb-3 font-bold">
                     {key.replace(/([A-Z])/g, " $1").toUpperCase()}:
                     {symbols[key] && (
                       <span className="ml-2 text-sm text-gray-600">
@@ -420,13 +454,12 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
                       </span>
                     )}
                   </label>
-                  <span className=" text-xs text-gray-600">
-                    {input_des[key]}
-                  </span>
+               
                   <div className="flex items-center">
                     <Input
                       type="number"
                       variant="standard"
+                      label={input_des[key]}
                       name={key}
                       value={
                         key === "airDensity" && operand[key] === undefined
@@ -443,7 +476,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
             })}
              <div>
             <div className="flex justify-items-center">
-              <label className="block mb-1 font-bold">
+              <label className="block  font-bold mb-3">
                 WHEEL DIA:
                 </label>
                 <span className="ml-2 text-sm text-gray-600">(mm) </span>
@@ -454,12 +487,13 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
                 
               
               </div>
-              <span className=" text-xs text-gray-600">Size of the Wheel</span>
+              
 
               <Input
                 type="number"
                 variant="standard"
-                name="Wheel Dia"
+                name="wheelDia"
+                label="Size of wheel"
                 value={operand.wheelDia}
                 onChange={handleChange}
                 className="w-full p-2"
@@ -519,7 +553,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
           <Dialog
             open={openInfo}
             onClose={() => setOpenInfo(false)}
-            className="relative z-10 "
+            className="relative z-10 rounded-none"
           >
             <DialogBody className="p-4 w-full text-xs">
               <h2 className="text-lg text-neutral-800  font-bold mb-4">
@@ -611,7 +645,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
           )}
         </div>
 
-        <Dialog open={open} handler={handleOpen} className="relative z-10">
+        <Dialog open={open} handler={handleOpen} className="relative z-10 rounded-none">
           <DialogHeader>Calculate Wheel Diameter</DialogHeader>
           <DialogBody className="">
             <div>
@@ -647,7 +681,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
                 <div className="flex items-center gap-4">
                   <Button
                     onClick={handleCalculateDia}
-                    className="p-2 bg-neutral-800"
+                    className="p-2 bg-neutral-800 rounded-none"
                   >
                     Calculate Diameter
                   </Button>
@@ -663,7 +697,8 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
           <DialogFooter>
             <Button
               variant="gradient"
-              color="neutral-800"
+              color="neutral-800 "
+              className="rounded-none"
               onClick={() => setOpen(false)}
             >
               <span>Confirm</span>
@@ -672,23 +707,41 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
         </Dialog>
 
         <div className="flex justify-center mt-5 space-x-4">
-          <Button onClick={handleCalculate}>Calculate</Button>
+          <Button className="rounded-none" onClick={handleCalculate}>Calculate</Button>
         </div>
-        <div className="mt-4 bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
-          <h2 className="text-2xl font-bold mb-5">Results:</h2>
+        <div className="mt-4 bg-gray-100 p-4 rounded-lg mb-4 shadow-inner rounded-none">
+          <h2 className="text-2xl font-bold mb-5">Computed Results:</h2>
+
+          <div className="bg-neutral-800 p-5 mb-5">
+          <h2 className="text-lg font-bold mb-4 text-white">Max Speed vs Motor Power without gradability</h2>
+            {graphData ? (
+              <Line data={graphData} options={{ responsive: true }} />
+            ) : (
+              <p className="text-white">
+                No graph data available. Please provide the necessary inputs to
+                generate the graph.
+              </p>
+            )}
+            </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 w-full">
             {Object.keys(results).length > 0 ? (
               Object.keys(results)
                 .filter(
                   (key) =>
-                    !["totRange", "theoreticalConsump", "frontal"].includes(key)
+                    !["totRange", "theoreticalConsump", "frontal","gradeResist"].includes(key)
                 )
                 .map((key) => (
-                  <div key={key} className="mb-2">
-                    <span className="font-bold">
+                  <div key={key} className="">
+                    <label className="font-bold text-xs">
                       {key.replace(/([A-Z])/g, " $1").toUpperCase()}:
-                    </span>{" "}
-                    <span>{results[key]}</span>
+                      {symbols[key] && (
+                      <span className="ml-2 text-sm text-gray-600">
+                        ({symbols[key]})
+                      </span>
+                    )}
+                    </label>{" "}
+                    <label className="text-xs">{results[key]}</label>
                   </div>
                 ))
             ) : (
@@ -696,7 +749,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
             )}
           </div>
         </div>
-        <div className="mt-4 bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
+        <div className="mt-4 bg-gray-100 p-4 rounded-lg mb-4 shadow-inner rounded-none">
           <h2 className="text-2xl font-bold mb-5">Gradability:</h2>
           <div className="grid grid-cols-2 gap-2">
             <Select
@@ -754,32 +807,23 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
             />
           </div>
           <div className="flex justify-center gap-3">
-            <Button onClick={handleGradabilityCalculate} className="mt-5">
+            <Button onClick={handleGradabilityCalculate} className="mt-5 rounded-none">
               Calculate Gradability
             </Button>
           </div>
-          <h2 className="text-2xl font-bold mb-5">Results:</h2>
+          <h2 className="text-2xl font-bold mb-5 mt-5">Computed Results:</h2>
           <div className="mb-4 w-full">
             <h5 className="font-bold">
               {gradabilityResults.motorPower}
-              kW required at {gradabilityInputs.slope}/
-              {((gradabilityInputs.slope / 45) * 100).toFixed(2)}% with GVW{" "}
-              {operand.gvw}kg and load of {gradabilityInputs.load}kg at{" "}
+              kW required to grade {gradabilityInputs.slope} Degrees/
+              {((gradabilityInputs.slope / 45) * 100).toFixed(2)}% with a load of {gradabilityInputs.load}kg  at{" "}
               {gradabilityInputs.maxSpeed} kmph
             </h5>
           </div>
-          <div className="bg-neutral-800 p-4 rounded-lg mb-4 shadow-inner">
-            <h2 className="text-lg font-bold mb-4 text-white">MaxSpeed</h2>
-            {graphData ? (
-              <Line data={graphData} options={{ responsive: true }} />
-            ) : (
-              <p className="text-white">
-                No graph data available. Please provide the necessary inputs to
-                generate the graph.
-              </p>
-            )}
+          <div className="bg-neutral-800 p-4 rounded-lg mb-4 shadow-inner rounded-none">
+        
             <h2 className="text-lg font-bold mb-4 text-white mt-5">
-              Gradability
+            Max Speed vs Motor Power with Gradability
             </h2>
             {graphSpeedData ? (
               <Line data={graphSpeedData} options={{ responsive: true }} />
@@ -799,7 +843,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
               className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
             />
           </div>
-          <Button color="neutral-800" onClick={generatePDF}>
+          <Button color="neutral-800" className="rounded-none" onClick={generatePDF}>
             Download Report
           </Button>
           <div className="flex justify-end w-full mt-5 mr-8">

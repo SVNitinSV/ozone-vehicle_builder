@@ -11,6 +11,26 @@
     "gvw": "kg",
     "wheelDia": "mm",
     "rollCoeff": "",
-    "airDen": "kg/m³"
+    "airDen": "kg/m³",
+
+    "acceleration": "m/s²",
+    "rollRest": "Nm",
+    "accForce": "N",
+    "areoDrag": "N",
+    "gradeResist": "N",
+    "totTracEff": "N",
+   "crusingTracEff": "N",
+   "wheelTorque": "Nm",
+    "wheelRpm": "rpm",
+    "wheelPower": "kW",
+    "crusWheelPow": "kW",
+    "crusTorq": "Nm",
+    "motorTorque": "Nm",
+    "tracForce": "N",
+   "motorSpeed": "rpm",
+   "motorPower": "kW",
+    "totRange": "km",
+   "theoreticalConsump": "L/100km",
+   "frontal": "m²"
   }
   

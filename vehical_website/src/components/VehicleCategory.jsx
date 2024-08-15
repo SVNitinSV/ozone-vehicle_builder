@@ -105,7 +105,7 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
               <Button
                 size="sm"
                 variant="text"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 rounded-none"
                 onClick={() => !option.disabled && handleSelection(option.value, option.cost)}
                 disabled={option.disabled}
               >
