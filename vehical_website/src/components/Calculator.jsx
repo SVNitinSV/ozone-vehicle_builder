@@ -80,7 +80,6 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
     const { name, value } = e.target;
     setOperand((prev) => ({ ...prev, [name]: value }));
   };
-
   const checkRegulationLimits = (calculatedResults) => {
     const selectedRegulation = regulationsData[formData.vehicleCategory]?.find(
       (reg) => reg.type === formData.regulation
@@ -113,7 +112,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
         return false;
       }
     }
-
+    //commit
     const motorPower = calculatedResults.motorPower;
     const peakPowerLimit = parseFloat(selectedRegulation.peakPower);
 
