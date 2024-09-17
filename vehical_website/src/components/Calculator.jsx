@@ -184,7 +184,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
         )} exceeds the regulation limit of ${limitCheck[key]}.`;
       }
     }
-
+    //commit
     const motorPower = calculatedResults.motorPower;
     const peakPowerLimit = parseFloat(selectedRegulation.peakPower);
 
