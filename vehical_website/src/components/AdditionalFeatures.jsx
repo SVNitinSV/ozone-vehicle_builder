@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import img from '../assets/On_road_passenger.png';
+
 import EVModel from '../ModelCar';
 
 import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
@@ -30,20 +30,36 @@ const AdditionalFeatures = ({ formData, setFormData, nextStep, prevStep }) => {
 
   const handleACChange = (checked) => {
     const value = checked ? 'ac' : 'non-ac';
-    const cost = checked ? acOptions.find(option => option.value === 'ac').cost : acOptions.find(option => option.value === 'non-ac').cost;
-    
+    const acCost = checked ? acOptions.find(option => option.value === 'ac').cost : acOptions.find(option => option.value === 'non-ac').cost;
+  
     setIsAC(checked);
-    setFormData({
-      ...formData,
-      ac: value,
-      totalCost: formData.totalCost + cost - (formData.ac ? acOptions.find(option => option.value === formData.ac).cost : 0)
+    setFormData(prevFormData => {
+      const currentACCost = prevFormData.ac ? acOptions.find(option => option.value === prevFormData.ac).cost : 0;
+      const totalFeaturesCost = acCost + prevFormData.techCost; // Assuming you have a techCost in formData
+      return {
+        ...prevFormData,
+        ac: value,
+        acCost: acCost, // Optionally store the ac cost
+        featuresCost: totalFeaturesCost, // Update featuresCost
+        totalCost: prevFormData.totalCost + acCost - currentACCost
+      };
     });
   };
 
   const handleTechSelection = (value, cost) => {
-    setFormData({ ...formData, features: value, totalCost: formData.totalCost + cost });
+    setFormData(prevFormData => {
+      const totalFeaturesCost = prevFormData.acCost + cost; // Assuming you have an acCost in formData
+      return {
+        ...prevFormData,
+        features: value,
+        techCost: cost, // Optionally store the tech cost
+        featuresCost: totalFeaturesCost, // Update featuresCost
+        totalCost: prevFormData.totalCost + cost // Update total cost if needed
+      };
+    });
     nextStep();
   };
+  
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 bg-gray-100">

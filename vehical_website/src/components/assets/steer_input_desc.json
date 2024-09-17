@@ -1,0 +1,13 @@
+{
+  "wheelBase": "Distance between axles.",
+  "Width": "Vehicle width.",
+  "wheelDia": "Wheel diameter.",
+  "track": "Axle width.",
+  "turningRadius": "Minimum turn radius.",
+  "OperationalLoad": "Standard load capacity.",
+  "fullLoad": "Max load capacity.",
+  "safetyLoad": "Safety load capacity.",
+  "frontWeight": "Front weight.",
+  "rearWeight": "Rear weight.",
+  "displacement": "Suspension travel."
+}

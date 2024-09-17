@@ -1,0 +1,14 @@
+{
+    "wheelBase": "mm",
+    "Width": "mm",
+    "wheelDia": "mm",
+    "track": "mm",
+    "turningRadius": "mm",
+    "OperationalLoad": "Kg",
+    "fullLoad": "Kg",
+    "safetyLoad": "Kg",
+    "frontWeight": "%",
+    "rearWeight": "%",
+    "displacement": "mm"
+  }
+  

@@ -1,52 +1,76 @@
-// src/ModelViewer.jsx
+import chassis from './assets/3dmodels/chassis/frame.gltf'; // First model
+import body from './assets/3dmodels/chassis/battery.gltf'; // Second model
+import wheels from './assets/3dmodels/chassis/drivetrain.gltf'; // Third model
 
-import React, { Suspense } from 'react';
-import ev from './assets/3dmodels/ev_car/scene.gltf';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import React, { useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { useLoader } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 
-// Load the GLTF model using the useGLTF hook
-const Model = ({ url }) => {
-  const { scene } = useGLTF(url, true);
-
-  // Use the useFrame hook to rotate the model continuously
-  useFrame(() => {
-    scene.rotation.y += 0.008; // Adjust rotation speed as needed
-  });
-
-  // Set the scale of the model
-  scene.scale.set(3, 3, 3); // Adjust the scale to ensure it's visible in the viewport
-
-  return <primitive object={scene} />;
+// Model component for each GLTF model
+const Model = ({ gltfFile, visible }) => {
+  const gltf = useLoader(GLTFLoader, gltfFile);
+  return visible ? <primitive object={gltf.scene} /> : null;
 };
 
-const ModelViewer = () => {
+const App = () => {
+  const [showChassis, setShowChassis] = useState(false);
+  const [showBody, setShowBody] = useState(false);
+  const [showWheels, setShowWheels] = useState(false);
+
   return (
-    <div className='w-full h-screen '>
-      <Canvas 
-        camera={{ position: [0, 2, 10], fov: 60 }} 
-        style={{ width: '100%', height: '100%' }}
-      >
-        {/* Add ambient light */}
-        <ambientLight intensity={5} />
+    <div className='w-full h-dvh'>
+      {/* Buttons to toggle the models */}
+      <div className="flex space-x-4 p-4">
+        <button
+          onClick={() => setShowChassis(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Add Chassis
+        </button>
+        <button
+          onClick={() => setShowBody(true)}
+          className="bg-green-500 text-white px-4 py-2 rounded"
+        >
+          Add Body
+        </button>
+        <button
+          onClick={() => setShowWheels(true)}
+          className="bg-red-500 text-white px-4 py-2 rounded"
+        >
+          Add Wheels
+        </button>
+      </div>
 
-        {/* Add directional light for more focused lighting */}
-        <directionalLight position={[5, 5, 5]} intensity={0.6} />
-        <directionalLight position={[-5, 5, 5]} intensity={0.3} />
+      {/* 3D Canvas */}
+      <Canvas camera={{ position: [-1, -1, 3], fov: 60 }}>
+        {/* Lighting Setup */}
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 5, 5]} intensity={0.5}  />
+        <directionalLight position={[5, -5, 5]} intensity={0.5} castShadow />
+        <directionalLight position={[-5, 5, 5]} intensity={0.5} castShadow />
+        <directionalLight position={[5, 5, -5]} intensity={0.5} castShadow />
+        <directionalLight position={[-5, -5, -5]} intensity={0.5} castShadow />
+        <directionalLight position={[-5, -5, 5]} intensity={0.5} castShadow />
+        <pointLight position={[-5, -5, -5]} intensity={0.7} />
 
-        {/* Add hemisphere light for overall illumination */}
-        <hemisphereLight intensity={3} />
+        {/* Render Models based on state */}
+        <Model gltfFile={chassis} visible={showChassis} />
+        <Model gltfFile={body} visible={showBody} />
+        <Model gltfFile={wheels} visible={showWheels} />
 
-        {/* Optionally add a spotlight for dramatic effects */}
-        <spotLight position={[15, 20, 10]} angle={0.3} intensity={5} />
-
-        <Suspense fallback={null}>
-          <Model url={ev} />
-        </Suspense>
-        <OrbitControls />
+        {/* OrbitControls for interaction */}
+        <OrbitControls
+          enableZoom={false}
+          target={[0, 0, 0]}
+          minPolarAngle={Math.PI / 4}
+          maxPolarAngle={Math.PI / 2}
+          enablePan={true}
+        />
       </Canvas>
     </div>
   );
 };
 
-export default ModelViewer;
+export default App;

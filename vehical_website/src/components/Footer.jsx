@@ -2,7 +2,7 @@ import { Typography } from "@material-tailwind/react";
  
 export function Footer() {
   return (
-    <footer className="bg-neutral-800 flex w-full flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 text-center md:justify-between">
+    <footer className="relative bottom-0 bg-neutral-800 flex w-full flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 border-t border-blue-gray-50 py-6 text-center md:justify-between">
       <Typography color="white" className="font-normal ml-5">
         &copy; 2024 OZONE MOTORS
       </Typography>

@@ -1,8 +1,8 @@
 import React from 'react';
-import ofrcImg from '../assets/Off_road_cargo.png';
-import ofrpImg from '../assets/Off_road_Passenger.png';
-import onrcImg from '../assets/On_road_cargo.png';
-import onrpImg from '../assets/On_road_passenger.png';
+import ofrcImg from '../assets/img/Off_road_cargo.png';
+import ofrpImg from '../assets/img/Off_road_Passenger.png';
+import onrcImg from '../assets/img/On_road_cargo.png';
+import onrpImg from '../assets/img/On_road_passenger.png';
 
 
 import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
@@ -17,10 +17,10 @@ import {
 
 // Options with associated images and details
 const options = [
-  { label: 'Off-Road Cargo', desc: "In campus vehicle for material handling, up to 1300 kg GVW", value: 'Off-Road Cargo', cost: 100000, img: ofrcImg, type: 'Off-Road', category: '4W Cargo' },
-  { label: 'Off-Road Passenger', desc: "In campus vehicle for people movement, up to 9 seats", value: 'Off-Road Passenger', cost: 110000, img: ofrpImg, type: 'Off-Road', category: '4W Passenger' },
-  { label: 'On-Road Cargo', desc: "Last mile cargo vehicle for e-logistics up to 1300 kg GVW", value: 'On-Road Cargo', cost: 120000, img: onrcImg, type: 'On-Road', category: '4W Cargo' },
-  { label: 'On-Road Passenger', desc: "Last mile passenger movement, up to 9 seats", value: 'On-Road Passenger', cost: 130000, img: onrpImg, type: 'On-Road', category: '4W Passenger' }
+  { label: 'Off-Road Cargo', desc: "In campus vehicle for material handling, up to 1300 kg GVW", value: 'Golf Cart', cost: 100000, img: ofrcImg, type: 'Off-Road', category: 'Golf Cart' },
+  { label: 'Off-Road Passenger', desc: "In campus vehicle for people movement, up to 9 seats", value: 'Off-Road Passenger', cost: 110000, img: ofrpImg, type: 'Off-Road', category: 'Golf Cart' },
+  { label: 'On-Road Cargo', desc: "Last mile cargo vehicle for e-logistics up to 1300 kg GVW", value: 'On-Road Cargo', cost: 120000, img: onrcImg, type: 'On-Road', category: 'Golf Cart' },
+  { label: 'On-Road Passenger', desc: "Last mile passenger movement, up to 9 seats", value: 'On-Road Passenger', cost: 130000, img: onrpImg, type: 'On-Road', category: 'Golf Cart' }
 ];
 
 const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
@@ -30,8 +30,12 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
   );
 
   const handleSelection = (value, cost) => {
-    setFormData({ ...formData, buildType: value, totalCost: formData.totalCost + cost });
-    nextStep();
+    setFormData({
+      ...formData,
+      buildType: value, // Set the selected build type
+      buildTypeCost: cost, // Update the cost for the selected build type
+    });
+    nextStep(); // Move to the next step
   };
 
   return (

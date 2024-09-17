@@ -1,5 +1,5 @@
 import React from 'react';
-import img from '../assets/On_road_passenger.png';
+import img from '../assets/img/On_road_passenger.png';
 
 import {
   Card,

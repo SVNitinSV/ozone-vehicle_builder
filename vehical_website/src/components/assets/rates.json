@@ -1,0 +1,37 @@
+{
+    "vehicleTypes": {
+      "car": 10000,
+      "truck": 20000,
+      "suv": 15000
+    },
+    "drivetrain": {
+      "fwd": 2000,
+      "rwd": 3000
+    },
+    "batterySizes": {
+      "small": 5000,
+      "medium": 10000,
+      "large": 15000
+    },
+    "buildTypes": {
+      "offRoadCargo": 12000,
+      "onRoadCargo": 10000,
+      "offRoadPassenger": 14000,
+      "onRoadPassenger": 11000
+    },
+    "features": {
+      "ac": 3000,
+      "nonAc": 0
+    },
+    "techPacks": {
+      "basic": 1000,
+      "smart": 2000,
+      "smartPlus": 3000
+    },
+    "warranty": {
+      "oneYear": 1000,
+      "twoYears": 1800,
+      "threeYears": 2500
+    }
+  }
+  

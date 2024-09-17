@@ -1,10 +1,10 @@
 import React from 'react';
-import ofrcImg from '../assets/Cart.jpeg';
-import ofrpImg from '../assets/UTV.jpeg';
-import onrcImg from '../assets/NEC.jpeg';
-import onrpImg from '../assets/Quad.jpeg';
+import ofrcImg from '../assets/img/Cart.jpeg';
+import ofrpImg from '../assets/img/UTV.jpeg';
+import onrcImg from '../assets/img/NEC.jpeg';
+import onrpImg from '../assets/img/Quad.jpeg';
 
-import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 import {
   Card,
@@ -18,7 +18,7 @@ const options = [
   {
     label: 'QUAD',
     desc: '2 Seater Fun Motorsport Vehicles',
-    value: '4W Passenger',
+    value: 'QUAD',
     cost: 150000,
     img: onrpImg,
     disabled: false,
@@ -26,7 +26,7 @@ const options = [
   {
     label: 'NEV',
     desc: 'Robust lifestyle passenger movement upto 6 people.',
-    value: '4W Cargo',
+    value: 'NEV',
     cost: 160000,
     img: onrcImg,
     disabled: false,
@@ -34,7 +34,7 @@ const options = [
   {
     label: 'UTV',
     desc: 'Rugged Passenger + Cargo, Ideal for utility',
-    value: '3W Passenger',
+    value: 'UTV',
     cost: 70000,
     img: ofrpImg,
     disabled: false,
@@ -42,7 +42,7 @@ const options = [
   {
     label: 'Golf Cart',
     desc: 'Versatile cargo vehicle for small to medium loads, ideal for local deliveries.',
-    value: '3W Cargo',
+    value: 'Golf Cart',
     cost: 75000,
     img: ofrcImg,
     disabled: false,
@@ -61,10 +61,21 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 no-scrollbar">
-      <h2 className="text-3xl md:text-4xl lg:text-5xl mb-8 text-center">
-        Select Vehicle Category
-      </h2>
+    <div>
+        <div className='flex justify-center mt-5'>
+
+<div className="ml-10">
+  <ArrowLeftIcon
+    onClick={prevStep}
+    className="cursor-pointer mt-1.5 text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 rounded-none"
+  />
+</div>
+<h2 className="text-3xl md:text-4xl  lg:text-5xl ml-5 text-center grow-0">
+  Select Vehicle Category
+</h2>
+</div>
+    <div className="xl:h-[90vh] lg:h-fit flex flex-col items-center justify-center px-4 py-4 md:px-8 lg:px-16 xl:px-24 no-scrollbar">
+      
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
         {options.map((option) => (
           <Card
@@ -117,13 +128,9 @@ const BuildType = ({ formData, setFormData, nextStep, prevStep }) => {
           </Card>
         ))}
       </div>
-      <div className="flex justify-start w-full mt-5 ml-8">
-        <ArrowTurnDownLeftIcon
-          onClick={prevStep}
-          className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
-        />
-      </div>
     </div>
+    </div>
+    
   );
 };
 

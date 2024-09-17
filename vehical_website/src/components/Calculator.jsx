@@ -14,8 +14,8 @@ import {
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
 import {
-  ArrowTurnDownLeftIcon,
-  ArrowTurnDownRightIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
 } from "@heroicons/react/24/outline";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
@@ -33,7 +33,7 @@ import {
 import { calculatePowertrain } from "../assets/calculators/calculatePowertrain";
 import { calculateWheelDiameter } from "../assets/calculators/CalculateWheelDia";
 import regulationsData from "../assets/details/reguations.json";
-import symbols from "./symbols.json";
+import symbols from "./assets/symbols.json";
 import input_des from "./assets/Input_description.json";
 
 const data = [
@@ -93,7 +93,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
     gearRatio: "",
     rollCoeff: "0.015",
     airDen: "1.1",
-    wheelDia: "625",
+    wheelDia: ""
   });
 
   const [gradabilityInputs, setGradabilityInputs] = useState({
@@ -248,6 +248,12 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
     const operandMaxSpeed = parseFloat(operand.maxSpeed);
     if (parseFloat(maxSpeed) > 0.5 * operandMaxSpeed) {
       alert("You can only climb at 50% of max speed.");
+      return;
+    }
+
+    const operandLoad = parseFloat(operand.gvw);
+    if (parseFloat(load) > operandLoad) {
+      alert("Load exceeds GVW");
       return;
     }
 
@@ -507,7 +513,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
 
           <div className="flex justify-center">
             <p className="mb-5 text-xs  ">
-              Dont change the below values unless you have idea about them{" "}
+              Dont change the below values unless you have idea about them
             </p>
             <QuestionMarkCircleIcon
               onClick={handleOpenInfo}
@@ -707,7 +713,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
         </Dialog>
 
         <div className="flex justify-center mt-5 space-x-4">
-          <Button className="rounded-none" onClick={handleCalculate}>Calculate</Button>
+          <Button className="rounded-none bg-neutral-800" onClick={handleCalculate}>Calculate</Button>
         </div>
         <div className="mt-4 bg-gray-100 p-4 rounded-lg mb-4 shadow-inner rounded-none">
           <h2 className="text-2xl font-bold mb-5">Computed Results:</h2>
@@ -807,7 +813,7 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
             />
           </div>
           <div className="flex justify-center gap-3">
-            <Button onClick={handleGradabilityCalculate} className="mt-5 rounded-none">
+            <Button onClick={handleGradabilityCalculate} className="mt-5 rounded-none bg-neutral-800">
               Calculate Gradability
             </Button>
           </div>
@@ -838,16 +844,16 @@ const Calculator = ({ formData, setFormData, nextStep, prevStep }) => {
 
         <div className="flex flex-row">
           <div className="flex justify-start w-full mt-5 ml-8">
-            <ArrowTurnDownLeftIcon
+            <ArrowLeftIcon
               onClick={prevStep}
               className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
             />
           </div>
-          <Button color="neutral-800" className="rounded-none" onClick={generatePDF}>
+          <Button color="neutral-800" className="rounded-none bg-neutral-800" onClick={generatePDF}>
             Download Report
           </Button>
           <div className="flex justify-end w-full mt-5 mr-8">
-            <ArrowTurnDownRightIcon
+            <ArrowRightIcon
               onClick={nextStep}
               className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
             />

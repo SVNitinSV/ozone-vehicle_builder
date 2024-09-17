@@ -1,5 +1,5 @@
 import React from 'react';
-import batImg from '../assets/Battery.png';
+import batImg from '../assets/img/Battery.png';
 import Bat_model from '../Modelrender';
 
 import { ArrowTurnDownLeftIcon } from '@heroicons/react/24/outline';
@@ -31,13 +31,13 @@ const BatteryConfiguration = ({ formData, setFormData, nextStep, prevStep }) => 
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 md:px-8 lg:px-16 xl:px-24 ">
-      <h2 className="text-3xl md:text-5xl mb-8 text-center">Select Battery</h2>
-      <div className="flex flex-col xl:flex-row items-center gap-8 w-full bg-gray-100 p-4 rounded-lg mb-4 shadow-inner">
+    <div className="">
+      <h2 className="text-3xl mt-5 md:text-5xl mb-8 text-center">Select Battery</h2>
+      <div className="flex flex-col xl:flex-row items-center gap-8 w-full bg-white p-4 -lg mb-4 h-[75vh]">
         
         <Bat_model ></Bat_model>
 
-        <div className="flex flex-col items-center w-full xl:w-1/2">
+        <div className="flex flex-col items-center w-full xl:w-1/3">
           {options.map(option => (
             <Card className="mt-6 w-full  hover:shadow-lg hover:shadow-gray-900/20"
               key={option.value}
@@ -79,7 +79,7 @@ const BatteryConfiguration = ({ formData, setFormData, nextStep, prevStep }) => 
           ))}
         </div>
       </div>
-      <div className="flex justify-start w-full mt-5 ml-8">
+      <div className="absolute flex justify-start w-full mt-5 mb-5 ml-8 bottom-0">
         <ArrowTurnDownLeftIcon
           onClick={prevStep}
           className="cursor-pointer text-neutral-800 hover:text-neutral-600 transition-all h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10"

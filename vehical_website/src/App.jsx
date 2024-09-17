@@ -5,6 +5,7 @@ import VehicleType from './components/VehicleType';
 import VehicleCategory from './components/VehicleCategory.jsx';
 import RegulationSelect from './components/RegulationSelect.jsx';
 import Calculator from './components/Calculator.jsx';
+import SteerSuspCalc from './components/SteeringandSuspension.jsx'
 import Drivetrain from './components/Drivetrain.jsx';
 import BatteryConfiguration from './components/BatteryConfiguration';
 import BuildType from './components/BuildType';
@@ -21,12 +22,13 @@ const components = {
   2: VehicleCategory,
   19: RegulationSelect,
   3: Calculator,
-  4: Drivetrain,
-  5: BatteryConfiguration,
-  6: BuildType,
-  7: AdditionalFeatures,
-  19: InsuranceWarranty,
-  8: Summary,
+  4: SteerSuspCalc,
+  5: Drivetrain,
+  43: BatteryConfiguration,
+  63: BuildType,
+  734: AdditionalFeatures,
+  99: InsuranceWarranty,
+  6: Summary,
 };
 
 const App = () => {
@@ -39,11 +41,16 @@ const App = () => {
     range2: '',
     range3: '',
     drivetrain: '',
+    drivetrainCost: '',
     battery: '',
+    batteryCost: '',
     buildType: '',
+    buildTypeCost: '',
+    chargerCost: '',
     features: '',
+    featuresCost: '',
     warranty: '',
-    totalCost: 0,
+    warrantyCost: '',
   });
 
   const nextStep = () => setStep(step + 1);
@@ -53,10 +60,10 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <Header />
+      <Header className=''/>
       {/*{step > 1 && <StepperComponent step={step} />}*/}
-      <CurrentComponent formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />
-      <Footer className='bottom-0 left-0 w-full' />
+      <CurrentComponent className='' formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />
+      
     </div>
   );
 };
