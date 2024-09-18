@@ -15,7 +15,9 @@ dist-ssr
 
 # Editor directories and files
 .vscode/*
-
+1.vscode/ozone-vehicals/vehical_website/src/assets/3dmodels/chassis/drivetrain.bin
+!.vscode/ozone-vehicals/vehical_website/src/assets/3dmodels/chassis/chassis.bin
+D:/vscode/ozone-vehicals/vehical_website/src/assets/3dmodels/ev_car/scene.bin
 !.vscode/extensions.json
 .idea
 .DS_Store
