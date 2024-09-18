@@ -166,7 +166,6 @@ const BatteryConfiguration = ({ formData, setFormData, nextStep, prevStep }) => 
         ac: value,
         acCost: acCost, // Optionally store the ac cost
         featuresCost: totalFeaturesCost, // Update featuresCost
-        totalCost: prevFormData.totalCost + acCost - currentACCost
       };
     });
   };

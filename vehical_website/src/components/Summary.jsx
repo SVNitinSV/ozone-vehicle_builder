@@ -18,7 +18,7 @@ const Summary = ({ formData, prevStep }) => {
 
   // Dynamically rendering vehicle details
   const orderDetails = Object.keys(formData)
-    .filter((key) => !key.includes("Cost") && key !== "totalCost" && formData[key])
+    .filter((key) => !key.includes("Cost") &&!key.includes("range") && key !== "totalCost" && formData[key])
     .map((key) => (
       <div className="flex justify-between" key={key}>
         <p className="text-lg font-medium">
@@ -30,7 +30,7 @@ const Summary = ({ formData, prevStep }) => {
 
   // Dynamically rendering the cost breakdown
   const costBreakdown = Object.keys(formData)
-  .filter((key) => key.includes("Cost") )
+  .filter((key) => key.includes("Cost") && !key.includes("total") )
   .map((key) => (
     <div className="flex justify-between" key={key}>
       <p className="text-lg font-medium">
