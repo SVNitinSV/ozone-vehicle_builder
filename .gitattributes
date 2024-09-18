@@ -1,1 +1,4 @@
 *.bin filter=lfs diff=lfs merge=lfs -text
+vehical_website/src/assets/3dmodels/chassis/drivetrain.bin filter=lfs diff=lfs merge=lfs -text
+vehical_website/src/assets/3dmodels/chassis/chassis.bin filter=lfs diff=lfs merge=lfs -text
+vehical_website/src/assets/3dmodels/ev_car/scene.bin filter=lfs diff=lfs merge=lfs -text
